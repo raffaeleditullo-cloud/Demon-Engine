@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demon Engine - Visual Simulation Dashboard</title>
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: #12141f;
+      --border: #22263a;
+      --crimson: #ff2a4b;
+      --cyan: #00e5ff;
+      --text: #e2e8f0;
+      --text-muted: #8492a6;
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; }
+    body { background-color: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; }
+    
+    .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 24px; }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .logo-img { width: 44px; height: 44px; border-radius: 8px; border: 1px solid var(--crimson); }
+    .brand h1 { font-size: 20px; letter-spacing: 1px; color: #fff; }
+    .brand span { font-size: 12px; color: var(--crimson); text-transform: uppercase; letter-spacing: 2px; }
+    .badge { background: rgba(255, 42, 75, 0.15); color: var(--crimson); border: 1px solid var(--crimson); padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+
+    .scenario-picker { display: flex; gap: 8px; margin-bottom: 16px; }
+    .btn { background: #1c2033; color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+    .btn:hover { background: #262c45; }
+    .btn.active { background: var(--crimson); color: white; border-color: var(--crimson); }
+
+    .hyp-list { display: flex; flex-direction: column; gap: 12px; }
+    .hyp-card { background: #0c0e17; border: 1px solid var(--border); border-radius: 8px; padding: 12px; transition: all 0.3s; }
+    .hyp-card.collapsed { border-color: var(--success); box-shadow: 0 0 12px rgba(16, 185, 129, 0.2); }
+    .hyp-card.destroyed { opacity: 0.45; border-color: #3f1821; }
+    
+    .hyp-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .hyp-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4; }
+    
+    .bar-container { background: #1a1e2e; height: 6px; border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; width: 0%; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .bar-fill.win { background: var(--success); }
+    .bar-fill.loss { background: var(--crimson); }
+
+    canvas { width: 100%; height: 200px; background: #08090e; border-radius: 8px; border: 1px solid #1a1e2e; margin-bottom: 16px; }
+    
+    .matrix-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .matrix-table th, .matrix-table td { padding: 8px; text-align: center; border: 1px solid #1a1e2e; }
+    .matrix-table th { background: #181c2b; color: var(--text-muted); }
+    .pos { color: var(--cyan); }
+    .neg { color: var(--crimson); }
+
+    .run-btn { width: 100%; background: var(--crimson); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 16px; font-size: 14px; }
+    .run-btn:hover { background: #e01b3c; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Demon Logo" class="logo-img" onerror="this.style.display='none'">
+      <div>
+        <h1>DEMON ENGINE</h1>
+        <span>Quantum-Inspired Consensus Middleware</span>
+      </div>
+    </div>
+    <div class="badge">LATENZA: 0.04 ms (Simulata in memoria)</div>
+  </div>
+
+  <div class="scenario-picker">
+    <button class="btn active" onclick="loadScenario('async')">1. Bug Fixing Async</button>
+    <button class="btn" onclick="loadScenario('contract')">2. Contract Validation</button>
+    <button class="btn" onclick="loadScenario('cyber')">3. Cyber Alert Triage</button>
+  </div>
+
+  <div class="grid">
+    <!-- COLONNA SINISTRA: IPOTESI E STATI -->
+    <div class="card">
+      <div class="card-title">
+        <span>Stati di Sovrapposizione Parallela (|Ψ⟩)</span>
+        <span id="active-scenario-name" style="font-size: 12px; color: var(--text-muted);">Scenario Asincrono</span>
+      </div>
+      <div class="hyp-list" id="hypotheses-container"></div>
+      <button class="run-btn" onclick="runCollapse()">Innesca Collasso di Fase (Interferenza)</button>
+    </div>
+
+    <!-- COLONNA DESTRA: VISUALIZZAZIONE D'ONDA E MATRICE -->
+    <div class="card">
+      <div class="card-title">Interferenza d'Onda e Oscillatore Armonico</div>
+      <canvas id="waveCanvas"></canvas>
+
+      <div class="card-title" style="margin-top: 20px;">Matrice di Sovrapposizione di Fase (I_ij)</div>
+      <table class="matrix-table" id="matrix-table"></table>
+
+      <div id="result-box" style="margin-top: 16px; padding: 12px; background: #0c0e17; border-radius: 6px; font-size: 12px; border-left: 3px solid var(--success); display: none;">
+        <strong>EIGENSTATE ELETTO:</strong> <span id="winner-name"></span><br>
+        <span style="color: var(--text-muted);">Tutte le ipotesi in controfase e gli errori sono stati smorzati al denominatore.</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scenarios = {
+      async: {
+        name: "Bug Fixing Asincrono (asyncio)",
+        hypotheses: [
+          { id: "H1", name: "Sleep bloccante sincrono", desc: "Usa time.sleep(1) in una coroutine. Blocca l'event loop.", error: true, resonance: 1.2, matrix: [1.0, -0.9, -0.99, -0.99] },
+          { id: "H2", name: "Threading Lock improprio", desc: "Usa threading.Lock() invece di asyncio.Lock(). Rischio starvation.", error: true, resonance: 1.1, matrix: [-0.9, 0.81, -0.99, -0.99] },
+          { id: "H3", name: "Double-Checked asyncio.Lock", desc: "Context manager non bloccante con double check post-acquisizione.", error: false, resonance: 49.3, matrix: [-0.99, -0.99, 1.0, 0.85] },
+          { id: "H4", name: "Single-Flight In-Flight Tasks", desc: "Mappa di Future condivisi con cleanup garantito in finally block.", error: false, resonance: 48.4, matrix: [-0.99, -0.99, 0.85, 1.0] }
+        ]
+      },
+      contract: {
+        name: "Validazione Contratto JSON",
+        hypotheses: [
+          { id: "H1", name: "Float Naive senza Schema", desc: "Perdita di precisione monetaria e KeyError su campi assenti.", error: true, resonance: 0.8, matrix: [1.0, -0.85, -0.98, -0.98] },
+          { id: "H2", name: "Regex complessa ReDoS", desc: "Parsing tramite espressione regolare vulnerabile a backtracking.", error: true, resonance: 0.6, matrix: [-0.85, 0.75, -0.98, -0.98] },
+          { id: "H3", name: "Decimal & Normalizzazione UTC", desc: "Tipizzazione rigida Decimal, whitelist valute e UTC ISO 8601.", error: false, resonance: 49.5, matrix: [-0.98, -0.98, 1.0, 0.88] },
+          { id: "H4", name: "Pydantic Frozen Model", desc: "Modello immutabile con validatori di business logic conformi.", error: false, resonance: 49.1, matrix: [-0.98, -0.98, 0.88, 1.0] }
+        ]
+      },
+      cyber: {
+        name: "Cyber Incident Triage",
+        hypotheses: [
+          { id: "H1", name: "Falso Allarme Isolato", desc: "Singolo alert firewall senza correlazione endpoint o identità.", error: true, resonance: 1.5, matrix: [1.0, -0.95, -0.99, -0.99] },
+          { id: "H2", name: "Allucinazione Host Drop", desc: "Isolamento dell'intero server centrale per un pacchetto scartato.", error: true, resonance: 0.9, matrix: [-0.95, 0.8, -0.99, -0.99] },
+          { id: "H3", name: "Correlazione Multi-Vettore", desc: "IP sospetto + EDR hash malevolo + Token revoca automatica sicura.", error: false, resonance: 51.2, matrix: [-0.99, -0.99, 1.0, 0.92] },
+          { id: "H4", name: "Quarantena Transazionale MFA", desc: "Blocco della sola sessione utente con notifica out-of-band.", error: false, resonance: 46.4, matrix: [-0.99, -0.99, 0.92, 1.0] }
+        ]
+      }
+    };
+
+    let currentScenario = 'async';
+
+    function loadScenario(key) {
+      currentScenario = key;
+      document.querySelectorAll('.scenario-picker .btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('active-scenario-name').innerText = scenarios[key].name;
+      document.getElementById('result-box').style.display = 'none';
+
+      const sc = scenarios[key];
+      const container = document.getElementById('hypotheses-container');
+      container.innerHTML = '';
+
+      sc.hypotheses.forEach(h => {
+        container.innerHTML += `
+          <div class="hyp-card" id="card-${h.id}">
+            <div class="hyp-header">
+              <span>[${h.id}] ${h.name}</span>
+              <span id="prob-${h.id}">Stato: |Ψ⟩</span>
+            </div>
+            <div class="hyp-desc">${h.desc}</div>
+            <div class="bar-container">
+              <div class="bar-fill ${h.error ? 'loss' : 'win'}" id="bar-${h.id}"></div>
+            </div>
+          </div>
+        `;
+      });
+
+      renderMatrix(sc);
+      drawWave(false);
+    }
+
+    function renderMatrix(sc) {
+      const table = document.getElementById('matrix-table');
+      let html = '<tr><th>I_ij</th>' + sc.hypotheses.map(h => `<th>${h.id}</th>`).join('') + '</tr>';
+      
+      for(let i=0; i<sc.hypotheses.length; i++) {
+        html += `<tr><th>${sc.hypotheses[i].id}</th>`;
+        for(let j=0; j<sc.hypotheses.length; j++) {
+          let val = sc.hypotheses[i].matrix[j];
+          let cls = val >= 0 ? 'pos' : 'neg';
+          html += `<td class="${cls}">${val > 0 ? '+' : ''}${val.toFixed(2)}</td>`;
+        }
+        html += '</tr>';
+      }
+      table.innerHTML = html;
+    }
+
+    function runCollapse() {
+      const sc = scenarios[currentScenario];
+      drawWave(true);
+
+      sc.hypotheses.forEach(h => {
+        const card = document.getElementById(`card-${h.id}`);
+        const bar = document.getElementById(`bar-${h.id}`);
+        const prob = document.getElementById(`prob-${h.id}`);
+
+        bar.style.width = h.resonance + '%';
+        prob.innerText = h.resonance + '% densità';
+
+        if (h.error) {
+          card.classList.add('destroyed');
+          card.classList.remove('collapsed');
+        } else {
+          card.classList.add('collapsed');
+          card.classList.remove('destroyed');
+        }
+      });
+
+      const winner = sc.hypotheses.find(h => !h.error);
+      const resBox = document.getElementById('result-box');
+      resBox.style.display = 'block';
+      document.getElementById('winner-name').innerText = `[${winner.id}] ${winner.name} (${winner.resonance}%)`;
+    }
+
+    function drawWave(collapsed) {
+      const canvas = document.getElementById('waveCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.parentElement.clientWidth - 40;
+      canvas.height = 180;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const midY = canvas.height / 2;
+
+      // Onda base
+      ctx.beginPath();
+      ctx.strokeStyle = collapsed ? '#10b981' : '#ff2a4b';
+      ctx.lineWidth = 2;
+
+      for (let x = 0; x < canvas.width; x++) {
+        let y;
+        if (!collapsed) {
+          // Sovrapposizione caotica con sfasamenti
+          y = midY + Math.sin(x * 0.05) * 30 + Math.sin(x * 0.12) * 20 + (Math.random() - 0.5) * 6;
+        } else {
+          // Onda stazionaria risonante e pulita
+          y = midY + Math.sin(x * 0.04) * 45;
+        }
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Linea di centro
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.moveTo(0, midY);
+      ctx.lineTo(canvas.width, midY);
+      ctx.stroke();
+    }
+
+    window.onload = () => loadScenario('async');
+    window.onresize = () => drawWave(false);
+  </script>
+</body>
+</html>
