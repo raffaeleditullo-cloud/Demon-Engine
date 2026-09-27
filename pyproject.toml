@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "demon-engine"
+version = "1.0.0"
+authors = [
+  { name="Raffaele Di Tullo" },
+]
+description = "Bio-Inspired Quantum-Coherence Consensus Middleware for AI Agents"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[tool.setuptools]
+py-modules = ["demon_engine", "skill_engine"]
