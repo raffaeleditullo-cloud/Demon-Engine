@@ -22,10 +22,10 @@ dove la similarità di Jaccard è:
 
 $$J(inv_i, inv_j) = \frac{|inv_i \cap inv_j|}{|inv_i \cup inv_j|}$$
 
-**Regole di sfasamento:**
-- Se i **verdict divergono** (`verdict_i ≠ verdict_j`): forza $\Delta\phi \to \pi$ (opposizione di fase, annullamento massimo)
-- Se ci sono **antipattern** in una delle due ipotesi: sposta il fasore verso $\pi$ con penalità proporzionale
-- Se i verdict **concordano** e gli invarianti si sovrappongono: $\Delta\phi \in [0, \pi/3]$ (risonanza costruttiva)
+**Regole di sfasamento (in ordine di priorità):**
+1. Se i **verdict divergono** (`verdict_i ≠ verdict_j`): forza $\Delta\phi \to \pi$ (opposizione di fase, annullamento massimo)
+2. Se i verdict **concordano**: $\Delta\phi \in [0, \pi/3]$ (risonanza costruttiva), anche se una delle due ha antipattern. I difetti restano penalizzati sulla singola ipotesi tramite $\beta$.
+3. Se non c'è un verdict condiviso e ci sono **antipattern** in una delle due ipotesi: sposta il fasore verso $\pi$ con penalità proporzionale
 
 ---
 

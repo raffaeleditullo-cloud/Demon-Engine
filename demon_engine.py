@@ -44,6 +44,9 @@ class DemonEngine:
     """
     Motore quantistico-probabilistico che filtra ipotesi parallele tramite interferenza ondulatoria.
     """
+    # Soglia unica su |cos(d_phi)| sotto la quale una coppia è considerata ortogonale
+    INTERFERENCE_THRESHOLD = 0.1
+
     def __init__(
         self,
         phase_damping: float = 1.2,
@@ -57,8 +60,11 @@ class DemonEngine:
     def _calculate_phase_difference(self, h1: DemonHypothesis, h2: DemonHypothesis) -> float:
         """
         Calcola la differenza di fase tra due onde di pensiero:
-        - Se condividono verdetto/invarianti core: risonanza costruttiva d_phi in [0, pi/3].
-        - Se vi è disaccordo o presenza di antipattern/allucinazioni: opposizione di fase distruttiva d_phi -> pi.
+        Ordine di priorità:
+        1. Verdetti diversi: opposizione di fase d_phi = 0.96*pi.
+        2. Stesso verdetto: risonanza costruttiva d_phi in [0, pi/3], anche in presenza di antipattern.
+        3. Nessun verdetto condiviso e antipattern presenti: sfasamento verso pi.
+        4. Altrimenti: d_phi proporzionale alla distanza tra gli invarianti.
         """
         has_antipatterns = bool(h1.antipatterns or h2.antipatterns)
         total_antipatterns = len(h1.antipatterns) + len(h2.antipatterns)
@@ -75,15 +81,18 @@ class DemonEngine:
         inter_inv = len(h1.invariants.intersection(h2.invariants))
         jaccard = inter_inv / union_inv if union_inv > 0 else 0.0
 
-        # 2. Se una delle due contiene antipattern (allucinazioni, blocchi o loop)
+        # 2. Concordanza di verdetto: fase costruttiva [0, pi/3].
+        #    Valutata prima degli antipattern, così le risposte che concordano si rafforzano;
+        #    i loro difetti restano penalizzati individualmente (internal_damping e diagonale).
+        if outcome1 and outcome2 and outcome1 == outcome2:
+            return (1.0 - jaccard) * (math.pi / 3.0)
+
+        # 3. Senza verdetto condiviso, gli antipattern (allucinazioni, blocchi o loop)
+        #    spingono la coppia verso l'opposizione di fase
         if has_antipatterns:
             # Sfasamento guidato verso pi (cancellazione distruttiva)
             penalty_shift = 0.2 * total_antipatterns
             return min(math.pi, (math.pi * 0.70) + penalty_shift)
-
-        # 3. Concordanza su rami corretti: fase costruttiva [0, pi/3]
-        if outcome1 and outcome2 and outcome1 == outcome2:
-            return (1.0 - jaccard) * (math.pi / 3.0)
 
         # Default proporzionale
         return (1.0 - jaccard) * (math.pi * 0.5)
@@ -95,6 +104,10 @@ class DemonEngine:
         Costruisce la matrice di interferenza quantistica:
         I_ij = A_i * A_j * cos(phi_i - phi_j)
         e calcola le ampiezze efficaci post-interferenza.
+
+        La differenza di fase è calcolata una sola volta per coppia (i < j) e la stessa
+        matrice dei coseni alimenta visualizzazione, contatori e punteggio, con un'unica
+        soglia su cos(d_phi): l'audit descrive esattamente il calcolo che elegge il vincitore.
         """
         n = len(hypotheses)
         matrix = [[0.0] * n for _ in range(n)]
@@ -103,44 +116,47 @@ class DemonEngine:
 
         audit.append(f"Avvio interferenza ondulatoria tra {n} stati simultanei...")
 
-        # 1. Calcolo della matrice di sovrapposizione e sfasamento
+        # 1. Matrice dei coseni: d_phi è simmetrica, basta calcolarla per i < j
+        cos_matrix = [[1.0] * n for _ in range(n)]
         for i in range(n):
-            for j in range(n):
-                if i == j:
-                    # Auto-interferenza scalata per eventuali antipattern intrinseci
-                    penalty = 1.0 - min(0.9, len(hypotheses[i].antipatterns) * self.antipattern_penalty * 0.5)
-                    matrix[i][j] = (hypotheses[i].amplitude ** 2) * penalty
-                else:
-                    d_phi = self._calculate_phase_difference(hypotheses[i], hypotheses[j])
-                    cos_factor = math.cos(d_phi)
-                    term = hypotheses[i].amplitude * hypotheses[j].amplitude * cos_factor
-                    matrix[i][j] = term
+            for j in range(i + 1, n):
+                d_phi = self._calculate_phase_difference(hypotheses[i], hypotheses[j])
+                cos_matrix[i][j] = cos_matrix[j][i] = math.cos(d_phi)
 
-                    if i < j:
-                        if term > 0.1:
-                            constructive_count += 1
-                            audit.append(
-                                f"  [+] Risonanza Costruttiva: {hypotheses[i].id} <-> {hypotheses[j].id} "
-                                f"(cos(d_phi)={cos_factor:+.3f}, ampiezza={term:+.3f})"
-                            )
-                        elif term < -0.1:
-                            destructive_count += 1
-                            audit.append(
-                                f"  [-] Annullamento Distruttivo: {hypotheses[i].id} <-> {hypotheses[j].id} "
-                                f"(cos(d_phi)={cos_factor:+.3f}, ampiezza={term:+.3f})"
-                            )
+        # 2. Matrice di sovrapposizione mostrata e contatori
+        for i in range(n):
+            # Auto-interferenza scalata per eventuali antipattern intrinseci (solo visualizzazione)
+            penalty = 1.0 - min(0.9, len(hypotheses[i].antipatterns) * self.antipattern_penalty * 0.5)
+            matrix[i][i] = (hypotheses[i].amplitude ** 2) * penalty
 
-        # 2. Calcolo dell'Ampiezza Effettiva (Equazione del Demone)
+            for j in range(i + 1, n):
+                cos_factor = cos_matrix[i][j]
+                term = hypotheses[i].amplitude * hypotheses[j].amplitude * cos_factor
+                matrix[i][j] = matrix[j][i] = term
+
+                if cos_factor > self.INTERFERENCE_THRESHOLD:
+                    constructive_count += 1
+                    audit.append(
+                        f"  [+] Risonanza Costruttiva: {hypotheses[i].id} <-> {hypotheses[j].id} "
+                        f"(cos(d_phi)={cos_factor:+.3f}, ampiezza={term:+.3f})"
+                    )
+                elif cos_factor < -self.INTERFERENCE_THRESHOLD:
+                    destructive_count += 1
+                    audit.append(
+                        f"  [-] Annullamento Distruttivo: {hypotheses[i].id} <-> {hypotheses[j].id} "
+                        f"(cos(d_phi)={cos_factor:+.3f}, ampiezza={term:+.3f})"
+                    )
+
+        # 3. Calcolo dell'Ampiezza Effettiva (Equazione del Demone)
         for i in range(n):
             s_plus = 0.0
             s_minus = 0.0
             for j in range(n):
                 if i != j:
-                    d_phi = self._calculate_phase_difference(hypotheses[i], hypotheses[j])
-                    cos_factor = math.cos(d_phi)
-                    if cos_factor > 0.05:
+                    cos_factor = cos_matrix[i][j]
+                    if cos_factor > self.INTERFERENCE_THRESHOLD:
                         s_plus += hypotheses[j].amplitude * cos_factor
-                    elif cos_factor < -0.05:
+                    elif cos_factor < -self.INTERFERENCE_THRESHOLD:
                         s_minus += hypotheses[j].amplitude * abs(cos_factor)
 
             # Penalità interna se l'ipotesi ha antipattern o allucinazioni
