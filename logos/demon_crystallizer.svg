@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="crystalGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ff88" />
+      <stop offset="100%" stop-color="#057a55" />
+    </linearGradient>
+    <filter id="neonBlurCrystal" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Quantum Octahedron Crystal Facets -->
+  <!-- Top Center Triangle -->
+  <polygon points="250,60 360,200 250,230" fill="#04271a" stroke="url(#crystalGlow)" stroke-width="4" filter="url(#neonBlurCrystal)" />
+  <polygon points="250,60 140,200 250,230" fill="#063826" stroke="url(#crystalGlow)" stroke-width="4" filter="url(#neonBlurCrystal)" />
+  
+  <!-- Outer Flanks Upper -->
+  <polygon points="250,60 360,200 420,230" fill="#021c12" stroke="#00ff88" stroke-width="3" />
+  <polygon points="250,60 140,200 80,230" fill="#021c12" stroke="#00ff88" stroke-width="3" />
+
+  <!-- Equatorial Belt -->
+  <polygon points="140,200 250,230 360,200 420,230 250,260 80,230" fill="#0b4a34" stroke="#00ff88" stroke-width="4" />
+
+  <!-- Lower Pyramid Facets -->
+  <polygon points="250,440 360,200 250,260" fill="#032418" stroke="#00ff88" stroke-width="4" />
+  <polygon points="250,440 140,200 250,260" fill="#053322" stroke="#00ff88" stroke-width="4" />
+  <polygon points="250,440 360,200 420,230" fill="#01140d" stroke="#00ff88" stroke-width="3" />
+  <polygon points="250,440 140,200 80,230" fill="#01140d" stroke="#00ff88" stroke-width="3" />
+
+  <!-- Central Quantum Invariant Seed (The Crystallized Core) -->
+  <circle cx="250" cy="230" r="16" fill="#00ff88" />
+  <circle cx="250" cy="230" r="28" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="6,4" />
+
+  <!-- Self-Healing Resonance Orbitals -->
+  <ellipse cx="250" cy="240" rx="190" ry="60" fill="none" stroke="#00ff88" stroke-width="2" stroke-opacity="0.5" transform="rotate(-25 250 240)" />
+  <ellipse cx="250" cy="240" rx="190" ry="60" fill="none" stroke="#00ff88" stroke-width="2" stroke-opacity="0.5" transform="rotate(25 250 240)" />
+</svg>

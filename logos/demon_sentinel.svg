@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sentinelGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9900" />
+      <stop offset="100%" stop-color="#ff3300" />
+    </linearGradient>
+    <filter id="neonBlurSentinel" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer Defensive Hexagon -->
+  <polygon points="250,55 390,135 390,305 250,385 110,305 110,135" fill="#180b03" stroke="url(#sentinelGlow)" stroke-width="8" filter="url(#neonBlurSentinel)" />
+
+  <!-- Inner Blast-Radius Perimeter -->
+  <polygon points="250,90 360,155 360,285 250,350 140,285 140,155" fill="#261004" stroke="#ff9900" stroke-width="3" stroke-dasharray="10,6" />
+
+  <!-- Fortress Cross-Braces / Defense Grid -->
+  <line x1="250" y1="90" x2="250" y2="350" stroke="#ffaa00" stroke-width="4" />
+  <line x1="140" y1="155" x2="360" y2="285" stroke="#ffaa00" stroke-width="2.5" opacity="0.6" />
+  <line x1="140" y1="285" x2="360" y2="155" stroke="#ffaa00" stroke-width="2.5" opacity="0.6" />
+
+  <!-- Central Locking Aegis Core -->
+  <circle cx="250" cy="220" r="38" fill="#120601" stroke="#ff7700" stroke-width="6" />
+  <polygon points="250,195 270,235 230,235" fill="#ffaa00" />
+  <circle cx="250" cy="220" r="10" fill="#fff" />
+
+  <!-- Outer Containment Chevron Accents -->
+  <path d="M 230 420 L 250 445 L 270 420" fill="none" stroke="#ff7700" stroke-width="5" stroke-linecap="round" />
+  <path d="M 220 440 L 250 470 L 280 440" fill="none" stroke="#ff9900" stroke-width="6" stroke-linecap="round" />
+  
+  <line x1="75" y1="115" x2="100" y2="130" stroke="#ff7700" stroke-width="4" />
+  <line x1="425" y1="115" x2="400" y2="130" stroke="#ff7700" stroke-width="4" />
+</svg>

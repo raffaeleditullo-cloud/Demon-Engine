@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="synapseGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#0066aa" />
+    </linearGradient>
+    <filter id="neonBlurSynapse" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Core Synaptic Node -->
+  <circle cx="250" cy="250" r="45" fill="#06121e" stroke="url(#synapseGlow)" stroke-width="6" filter="url(#neonBlurSynapse)"/>
+  <circle cx="250" cy="250" r="18" fill="#00f0ff" />
+
+  <!-- Radiating Quantum Axon Beams -->
+  <!-- Top Node -->
+  <line x1="250" y1="205" x2="250" y2="100" stroke="#00f0ff" stroke-width="5" stroke-dasharray="6,4" />
+  <polygon points="250,75 265,100 235,100" fill="#00f0ff" />
+  
+  <!-- Bottom Node -->
+  <line x1="250" y1="295" x2="250" y2="400" stroke="#00f0ff" stroke-width="5" stroke-dasharray="6,4" />
+  <polygon points="250,425 265,400 235,400" fill="#00f0ff" />
+
+  <!-- Diagonal Nodes (Hexagonal Array) -->
+  <!-- Top-Right -->
+  <line x1="285" y1="220" x2="380" y2="140" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="395" cy="128" r="16" fill="#06121e" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="395" cy="128" r="6" fill="#00f0ff" />
+
+  <!-- Top-Left -->
+  <line x1="215" y1="220" x2="120" y2="140" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="105" cy="128" r="16" fill="#06121e" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="105" cy="128" r="6" fill="#00f0ff" />
+
+  <!-- Bottom-Right -->
+  <line x1="285" y1="280" x2="380" y2="360" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="395" cy="372" r="16" fill="#06121e" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="395" cy="372" r="6" fill="#00f0ff" />
+
+  <!-- Bottom-Left -->
+  <line x1="215" y1="280" x2="120" y2="360" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="105" cy="372" r="16" fill="#06121e" stroke="#00f0ff" stroke-width="4" />
+  <circle cx="105" cy="372" r="6" fill="#00f0ff" />
+
+  <!-- Concentric Orbital Invariant Waves -->
+  <circle cx="250" cy="250" r="115" fill="none" stroke="#00f0ff" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="12,10" />
+  <circle cx="250" cy="250" r="185" fill="none" stroke="#00f0ff" stroke-width="1.5" stroke-opacity="0.3" />
+</svg>

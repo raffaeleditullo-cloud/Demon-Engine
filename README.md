@@ -126,38 +126,33 @@ All benchmarks run locally with zero external network or GPU dependencies:
 
 ---
 
-## 🚀 End-to-End 5-Phase Architecture
+## 🛡️ DEMON SUITE // The 5 Elite Abilities & Signature Identity
 
-DEMON Engine operates as a full-stack, zero-token local reflex engine:
+DEMON is structured as a modular ecosystem: an **Oracular Kernel** surrounded by **5 Specialized Cyber Abilities**. Each ability has a dedicated vector signature, a distinct cyber color, and addresses a critical failure mode of modern LLMs:
 
-```
-[ Operator Voice / Text ]
-          │
-          ▼
-┌───────────────────────────────────────────────┐
-│ 1. Voice Cockpit & Web Speech API (Phase 4)   │ ──> Latency: 12 ms
-└───────────────────────────────────────────────┘
-          │
-          ▼
-┌───────────────────────────────────────────────┐
-│ 2. Reflex Memory Cache Lookup (Phase 2)       │ ──> 0.15 ms (0 tokens, 0 web calls)
-└───────────────────────────────────────────────┘
-          │ [Cache Miss]
-          ▼
-┌───────────────────────────────────────────────┐
-│ 3. Live Web Consensus via DDGS (Phase 1)      │ ──> 3 Sources + Wave Filtering
-└───────────────────────────────────────────────┘
-          │ [Action Requested]
-          ▼
-┌───────────────────────────────────────────────┐
-│ 4. Safe Sentinel & Antipattern Gate (Phase 3) │ ──> Blocks destructive ops in 0.04 ms
-└───────────────────────────────────────────────┘
-          │ [Authorized Eigenstate]
-          ▼
-┌───────────────────────────────────────────────┐
-│ 5. Scoped System Actuator Execution           │ ──> Sandbox PowerShell / OS execution
-└───────────────────────────────────────────────┘
-```
+| Emblem | Ability | Signature Color | Core Function & Superpower |
+| :---: | :--- | :---: | :--- |
+| <img src="logos/demon_core.png" width="48" height="48" alt="DEMON CORE"/> | **`DEMON-CORE`** | **Crimson Red**<br>`#FF2A55` | **The Quantum Oracle**: Born-rule wave interference collapse in $<0.05\text{ ms}$. Arbitrates consensus and eliminates hallucinations. |
+| <img src="logos/demon_synapse.png" width="48" height="48" alt="SYNAPSE"/> | **`DEMON-SYNAPSE`** | **Electric Cyan**<br>`#00F0FF` | **Invariant & Intent Distiller**: Distills human prompts into mathematical contract invariants in $<10\text{ ms}$ before inference. |
+| <img src="logos/demon_reconciler.png" width="48" height="48" alt="RECONCILER"/> | **`DEMON-RECONCILER`** | **Prismatic Violet**<br>`#A855F7` | **Prompt-to-Diff Judge**: 3-point reconciliation between prompt intent, LLM explanation, and physical disk diff. Blocks silent omissions. |
+| <img src="logos/demon_sentinel.png" width="48" height="48" alt="SENTINEL"/> | **`DEMON-SENTINEL`** | **Laser Orange**<br>`#FF7700` | **OS Blast-Radius Shield**: MITRE ATT&CK sandbox. Defends against catastrophic data loss (T1485) and unscoped deletions in $0.04\text{ ms}$. |
+| <img src="logos/demon_crystallizer.png" width="48" height="48" alt="CRYSTALLIZER"/> | **`DEMON-CRYSTALLIZER`** | **Emerald Green**<br>`#00FF88` | **Auto-Skill & Bug Immunity**: Freezes resolved bugs and verified logic into immutable, permanent zero-token local skills. |
+| <img src="logos/demon_osint_probe.png" width="48" height="48" alt="OSINT-PROBE"/> | **`DEMON-OSINT-PROBE`** | **Deep Radar Blue**<br>`#06B6D4` | **Deep Web Recon & Truth Engine**: Deep scraping, infrastructure triage, and multi-source cross-resonance fact consensus. |
+
+---
+
+### 📦 Distribution Options: Standalone MCP vs Full Metapackage
+
+You can deploy DEMON according to your workflow needs:
+
+1. **`demon-mcp` (Standalone Core)**:
+   * Pure, ultra-lightweight decision oracle.
+   * Just the mathematical consensus engine (`demon_engine.py`) and standard stdio MCP bridge.
+   * Zero external dependencies, $<0.05\text{ ms}$ latency.
+
+2. **`demon-suite` (Full Metapackage)**:
+   * The complete weaponized suite: Core Oracle + all 5 Elite Abilities in a unified runtime.
+   * Unlocks full multi-agent orchestration, auto-skill crystallization, MITRE protection, and deep source verification.
 
 ---
 

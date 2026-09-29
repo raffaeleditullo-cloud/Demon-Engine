@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="reconcilerGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d946ef" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+    <filter id="neonBlurReconciler" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Central Prismatic Rhombus / Diamond Lens -->
+  <polygon points="250,70 390,250 250,430 110,250" fill="#120722" stroke="url(#reconcilerGlow)" stroke-width="7" filter="url(#neonBlurReconciler)" />
+
+  <!-- Inner Split Core (Prompt Intent vs Disk Reality) -->
+  <!-- Left Side: Prompt Intent Facet -->
+  <polygon points="250,95 240,250 135,250" fill="#200d3b" stroke="#d946ef" stroke-width="3" />
+  <polygon points="250,405 240,250 135,250" fill="#180a2d" stroke="#d946ef" stroke-width="3" />
+
+  <!-- Right Side: Disk Reality Facet -->
+  <polygon points="250,95 260,250 365,250" fill="#2c0e52" stroke="#a855f7" stroke-width="3" />
+  <polygon points="250,405 260,250 365,250" fill="#220b3e" stroke="#a855f7" stroke-width="3" />
+
+  <!-- Vertical Laser Balance Axis (Exact Match Line) -->
+  <line x1="250" y1="40" x2="250" y2="460" stroke="#f472b6" stroke-width="4" stroke-dasharray="8,4" />
+  <circle cx="250" cy="250" r="14" fill="#f472b6" />
+
+  <!-- Cross Verification Reticles -->
+  <line x1="70" y1="250" x2="110" y2="250" stroke="#d946ef" stroke-width="4" />
+  <line x1="390" y1="250" x2="430" y2="250" stroke="#a855f7" stroke-width="4" />
+  
+  <polygon points="250,30 260,50 240,50" fill="#f472b6" />
+  <polygon points="250,470 260,450 240,450" fill="#f472b6" />
+</svg>
