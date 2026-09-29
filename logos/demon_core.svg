@@ -1,58 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
-    <linearGradient id="coreGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="coreRed" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ff2a55" />
       <stop offset="50%" stop-color="#dc2626" />
-      <stop offset="100%" stop-color="#700018" />
+      <stop offset="100%" stop-color="#880018" />
     </linearGradient>
-    <filter id="glow-core" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="8" result="blur" />
+    <filter id="glow-core" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur1" />
+      <feGaussianBlur stdDeviation="14" result="blur2" />
       <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="blur" />
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Ambient Wave Halo -->
-  <circle cx="250" cy="250" r="195" fill="none" stroke="#ff2a55" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.4" />
-  <circle cx="250" cy="250" r="145" fill="none" stroke="#ff2a55" stroke-width="2" stroke-dasharray="4,8" opacity="0.6" />
-
-  <!-- Quantum Sinusoidal Wave Cross -->
-  <path d="M 80 250 Q 165 210, 250 250 T 420 250" fill="none" stroke="#ff2a55" stroke-width="2.5" opacity="0.5" filter="url(#glow-core)" />
-
-  <!-- DEMON ORIGAMI MASK EMBLEM -->
   <g transform="translate(0, 5)">
-    <!-- Back Stealth Armor Shell -->
-    <polygon points="250,85 330,150 375,130 345,250 250,350 155,250 125,130 170,150" 
-             fill="#090a12" stroke="#ff2a55" stroke-width="3" filter="url(#glow-core)" />
+    <!-- Outer Demon Horns & Psi Bowl -->
+    <path d="M 250 365 
+             C 185 365, 125 315, 108 240 
+             C 92 165, 78 95, 96 36 
+             C 104 68, 134 118, 170 146 
+             C 184 157, 188 180, 188 215 
+             C 188 265, 212 305, 250 305 
+             C 288 305, 312 265, 312 215 
+             C 312 180, 316 157, 330 146 
+             C 366 118, 396 68, 404 36 
+             C 422 95, 408 165, 392 240 
+             C 375 315, 315 365, 250 365 Z" 
+          fill="none" stroke="url(#coreRed)" stroke-width="12" stroke-linejoin="round" filter="url(#glow-core)" />
+    
+    <path d="M 250 365 
+             C 185 365, 125 315, 108 240 
+             C 92 165, 78 95, 96 36 
+             C 104 68, 134 118, 170 146 
+             C 184 157, 188 180, 188 215 
+             C 188 265, 212 305, 250 305 
+             C 288 305, 312 265, 312 215 
+             C 312 180, 316 157, 330 146 
+             C 366 118, 396 68, 404 36 
+             C 422 95, 408 165, 392 240 
+             C 375 315, 315 365, 250 365 Z" 
+          fill="none" stroke="#ff7799" stroke-width="3" stroke-linejoin="round" />
 
-    <!-- Left Laser Horn -->
-    <path d="M 185 160 L 120 100 L 132 180 L 175 205 Z" 
-          fill="#131522" stroke="url(#coreGlow)" stroke-width="4" filter="url(#glow-core)" />
-    <!-- Right Laser Horn -->
-    <path d="M 315 160 L 380 100 L 368 180 L 325 205 Z" 
-          fill="#131522" stroke="url(#coreGlow)" stroke-width="4" filter="url(#glow-core)" />
+    <!-- Center Column Pillar & Top Capital -->
+    <path d="M 215 140 L 285 140 L 285 162 L 268 162 L 268 335 L 232 335 L 232 162 L 215 162 Z" 
+          fill="none" stroke="url(#coreRed)" stroke-width="10" stroke-linejoin="round" filter="url(#glow-core)" />
+    <path d="M 215 140 L 285 140 L 285 162 L 268 162 L 268 335 L 232 335 L 232 162 L 215 162 Z" 
+          fill="none" stroke="#ff88aa" stroke-width="2.5" stroke-linejoin="round" />
 
-    <!-- Forehead Diamond Facet -->
-    <polygon points="250,130 290,190 250,225 210,190" 
-             fill="#181a28" stroke="#ff2a55" stroke-width="2" />
-
-    <!-- Left Cheek Facet -->
-    <polygon points="210,190 250,225 200,285 165,235" 
-             fill="#10121d" stroke="#333a52" stroke-width="1.5" />
-
-    <!-- Right Cheek Facet -->
-    <polygon points="290,190 250,225 300,285 335,235" 
-             fill="#10121d" stroke="#333a52" stroke-width="1.5" />
-
-    <!-- Cyber Slit Eyes (Crimson Laser) -->
-    <polygon points="215,200 238,208 222,212" fill="#ff2a55" filter="url(#glow-core)" />
-    <polygon points="285,200 262,208 278,212" fill="#ff2a55" filter="url(#glow-core)" />
-
-    <!-- Sacred Quantum Psi (Ψ) Chin Trident -->
-    <path d="M 226 280 L 226 304 Q 226 322, 250 322 Q 274 322, 274 304 L 274 280 M 250 268 L 250 355" 
-          fill="none" stroke="url(#coreGlow)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow-core)" />
+    <!-- Devil Tail Hook -->
+    <path d="M 234 362 L 234 420 C 234 460 262 468 276 448 C 282 438 284 424 270 424 C 258 424 252 435 252 450 C 252 480 238 494 228 494 C 214 494 212 458 212 420 L 212 362 Z" 
+          fill="url(#coreRed)" stroke="url(#coreRed)" stroke-width="4" filter="url(#glow-core)" />
+    <path d="M 234 362 L 234 420 C 234 460 262 468 276 448 C 282 438 284 424 270 424 C 258 424 252 435 252 450 C 252 480 238 494 228 494 C 214 494 212 458 212 420 L 212 362 Z" 
+          fill="#ff88aa" opacity="0.6" />
   </g>
 </svg>

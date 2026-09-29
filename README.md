@@ -130,14 +130,14 @@ All benchmarks run locally with zero external network or GPU dependencies:
 
 DEMON is structured as a modular ecosystem: an **Oracular Kernel** surrounded by **5 Specialized Cyber Abilities**. Each ability has a dedicated vector signature, a distinct cyber color, and addresses a critical failure mode of modern LLMs:
 
-| Emblem | Ability | Signature Color | Core Function & Superpower |
+| Emblem | Ability & Codename | Signature Color | Core Function & Superpower |
 | :---: | :--- | :---: | :--- |
-| <img src="logos/demon_core.png" width="48" height="48" alt="DEMON CORE"/> | **`DEMON-CORE`** | **Crimson Red**<br>`#FF2A55` | **The Quantum Oracle**: Born-rule wave interference collapse in $<0.05\text{ ms}$. Arbitrates consensus and eliminates hallucinations. |
-| <img src="logos/demon_synapse.png" width="48" height="48" alt="SYNAPSE"/> | **`DEMON-SYNAPSE`** | **Electric Cyan**<br>`#00F0FF` | **Invariant & Intent Distiller**: Distills human prompts into mathematical contract invariants in $<10\text{ ms}$ before inference. |
-| <img src="logos/demon_reconciler.png" width="48" height="48" alt="RECONCILER"/> | **`DEMON-RECONCILER`** | **Prismatic Violet**<br>`#A855F7` | **Prompt-to-Diff Judge**: 3-point reconciliation between prompt intent, LLM explanation, and physical disk diff. Blocks silent omissions. |
-| <img src="logos/demon_sentinel.png" width="48" height="48" alt="SENTINEL"/> | **`DEMON-SENTINEL`** | **Laser Orange**<br>`#FF7700` | **OS Blast-Radius Shield**: MITRE ATT&CK sandbox. Defends against catastrophic data loss (T1485) and unscoped deletions in $0.04\text{ ms}$. |
-| <img src="logos/demon_crystallizer.png" width="48" height="48" alt="CRYSTALLIZER"/> | **`DEMON-CRYSTALLIZER`** | **Emerald Green**<br>`#00FF88` | **Auto-Skill & Bug Immunity**: Freezes resolved bugs and verified logic into immutable, permanent zero-token local skills. |
-| <img src="logos/demon_osint_probe.png" width="48" height="48" alt="OSINT-PROBE"/> | **`DEMON-OSINT-PROBE`** | **Deep Radar Blue**<br>`#06B6D4` | **Deep Web Recon & Truth Engine**: Deep scraping, infrastructure triage, and multi-source cross-resonance fact consensus. |
+| <img src="logos/demon_core.png" width="48" height="48" alt="DEMON CORE"/> | **`DEMON-CORE`** | **Crimson Red**<br>`#FF2A55` | **The Quantum Oracle**: The original Psi-Demon Born-rule interference engine ($<0.05\text{ ms}$). Deterministic arbitration, removes all hallucinations. |
+| <img src="logos/demon_synapse.png" width="48" height="48" alt="SYNAPSE"/> | **`DEMON-SYNAPSE`** | **Electric Cyan**<br>`#00F0FF` | **The Neural Invariant Distiller**: Pre-inference intent distillation & invariant contracts ($<10\text{ ms}$) via RizzoFlow & Needle-3 logic. |
+| <img src="logos/demon_arbiter.png" width="48" height="48" alt="ARBITER"/> | **`DEMON-ARBITER`** | **Prismatic Violet**<br>`#A855F7` | **The Code & Diff Reconciler**: 3-point reconciliation between prompt intent, LLM explanation, and physical disk diff. Blocks silent omissions. |
+| <img src="logos/demon_cerberus.png" width="48" height="48" alt="CERBERUS"/> | **`DEMON-CERBERUS`** | **Laser Orange**<br>`#FF7700` | **The OS Blast-Radius Shield**: MITRE ATT&CK sandbox & gatekeeper. Defends against catastrophic data loss (T1485) and unscoped wipes in $0.04\text{ ms}$. |
+| <img src="logos/demon_forge.png" width="48" height="48" alt="FORGE"/> | **`DEMON-FORGE`** | **Emerald Green**<br>`#00FF88` | **The Auto-Skill Crystallizer**: Freezes resolved bugs and verified logic into immutable, permanent zero-token local skills. |
+| <img src="logos/demon_spectre.png" width="48" height="48" alt="SPECTRE"/> | **`DEMON-SPECTRE`** | **Deep Radar Blue**<br>`#06B6D4` | **The Deep Web Recon & OSINT Engine**: Heavy web scraping, infrastructure triage, and multi-source cross-resonance fact consensus. |
 
 ---
 
