@@ -1,125 +1,58 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
-    <!-- Gradienti Luxury Gaming / Dark Stealth -->
-    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#08080c"/>
-      <stop offset="50%" stop-color="#050508"/>
-      <stop offset="100%" stop-color="#020204"/>
+    <linearGradient id="coreGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff2a55" />
+      <stop offset="50%" stop-color="#dc2626" />
+      <stop offset="100%" stop-color="#700018" />
     </linearGradient>
-
-    <linearGradient id="crimson-glow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ff2a55"/>
-      <stop offset="50%" stop-color="#dc2626"/>
-      <stop offset="100%" stop-color="#88081a"/>
-    </linearGradient>
-
-    <linearGradient id="gold-accent" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f5d061"/>
-      <stop offset="100%" stop-color="#e5a93c"/>
-    </linearGradient>
-
-    <linearGradient id="stealth-steel" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2a2e3d"/>
-      <stop offset="50%" stop-color="#181a24"/>
-      <stop offset="100%" stop-color="#0f1118"/>
-    </linearGradient>
-
-    <!-- Filtri Glow Cyber / Luxury -->
-    <filter id="laser-glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
+    <filter id="glow-core" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
       <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Sfondo Ossidiana Luxury con cornice esagonale stealth -->
-  <rect width="500" height="500" rx="36" fill="url(#bg-grad)"/>
-  
-  <!-- Griglia poligonale e linee di coerenza di fondo -->
-  <g opacity="0.15" stroke="#ff2a55" stroke-width="1">
-    <line x1="50" y1="250" x2="450" y2="250"/>
-    <line x1="250" y1="50" x2="250" y2="450"/>
-    <circle cx="250" cy="250" r="180" fill="none" stroke-dasharray="4,8"/>
-    <circle cx="250" cy="250" r="120" fill="none" stroke-dasharray="2,6"/>
+  <!-- Ambient Wave Halo -->
+  <circle cx="250" cy="250" r="195" fill="none" stroke="#ff2a55" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.4" />
+  <circle cx="250" cy="250" r="145" fill="none" stroke="#ff2a55" stroke-width="2" stroke-dasharray="4,8" opacity="0.6" />
+
+  <!-- Quantum Sinusoidal Wave Cross -->
+  <path d="M 80 250 Q 165 210, 250 250 T 420 250" fill="none" stroke="#ff2a55" stroke-width="2.5" opacity="0.5" filter="url(#glow-core)" />
+
+  <!-- DEMON ORIGAMI MASK EMBLEM -->
+  <g transform="translate(0, 5)">
+    <!-- Back Stealth Armor Shell -->
+    <polygon points="250,85 330,150 375,130 345,250 250,350 155,250 125,130 170,150" 
+             fill="#090a12" stroke="#ff2a55" stroke-width="3" filter="url(#glow-core)" />
+
+    <!-- Left Laser Horn -->
+    <path d="M 185 160 L 120 100 L 132 180 L 175 205 Z" 
+          fill="#131522" stroke="url(#coreGlow)" stroke-width="4" filter="url(#glow-core)" />
+    <!-- Right Laser Horn -->
+    <path d="M 315 160 L 380 100 L 368 180 L 325 205 Z" 
+          fill="#131522" stroke="url(#coreGlow)" stroke-width="4" filter="url(#glow-core)" />
+
+    <!-- Forehead Diamond Facet -->
+    <polygon points="250,130 290,190 250,225 210,190" 
+             fill="#181a28" stroke="#ff2a55" stroke-width="2" />
+
+    <!-- Left Cheek Facet -->
+    <polygon points="210,190 250,225 200,285 165,235" 
+             fill="#10121d" stroke="#333a52" stroke-width="1.5" />
+
+    <!-- Right Cheek Facet -->
+    <polygon points="290,190 250,225 300,285 335,235" 
+             fill="#10121d" stroke="#333a52" stroke-width="1.5" />
+
+    <!-- Cyber Slit Eyes (Crimson Laser) -->
+    <polygon points="215,200 238,208 222,212" fill="#ff2a55" filter="url(#glow-core)" />
+    <polygon points="285,200 262,208 278,212" fill="#ff2a55" filter="url(#glow-core)" />
+
+    <!-- Sacred Quantum Psi (Ψ) Chin Trident -->
+    <path d="M 226 280 L 226 304 Q 226 322, 250 322 Q 274 322, 274 304 L 274 280 M 250 268 L 250 355" 
+          fill="none" stroke="url(#coreGlow)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow-core)" />
   </g>
-
-  <!-- ONDA QUANTISTICA SINUSOIDALE DI FASE (Risonanza di fondo) -->
-  <path d="M 60 250 Q 110 180, 160 250 T 260 250 T 360 250 T 440 250" 
-        fill="none" stroke="url(#crimson-glow)" stroke-width="2.5" opacity="0.4" filter="url(#soft-glow)"/>
-
-  <!-- CORPO PRINCIPALE DEMON (Geometria Stealth Origami Maschera) -->
-  <g transform="translate(0, -10)">
-    <!-- Sagoma Stealth Posteriore (Armatura) -->
-    <polygon points="250,90 320,150 360,130 330,240 250,330 170,240 140,130 180,150" 
-             fill="url(#stealth-steel)" stroke="#ff2a55" stroke-width="1.5" opacity="0.8"/>
-
-    <!-- CORNA SUPERIORI CYBER (Laser-Cut) -->
-    <!-- Corno Sinistro -->
-    <path d="M 190 160 L 135 110 L 145 175 L 180 200 Z" 
-          fill="#12141c" stroke="url(#crimson-glow)" stroke-width="2.5" filter="url(#laser-glow)"/>
-    <!-- Corno Destro -->
-    <path d="M 310 160 L 365 110 L 355 175 L 320 200 Z" 
-          fill="#12141c" stroke="url(#crimson-glow)" stroke-width="2.5" filter="url(#laser-glow)"/>
-
-    <!-- Piastre Facciali e Angoli d'Ombra Geometrici -->
-    <!-- Fronte centrale -->
-    <polygon points="250,130 285,185 250,220 215,185" 
-             fill="#1e2230" stroke="#3d4359" stroke-width="1"/>
-    
-    <!-- Guancia Sinistra -->
-    <polygon points="215,185 250,220 205,275 175,230" 
-             fill="#151722" stroke="#2a2e40" stroke-width="1"/>
-
-    <!-- Guancia Destra -->
-    <polygon points="285,185 250,220 295,275 325,230" 
-             fill="#151722" stroke="#2a2e40" stroke-width="1"/>
-
-    <!-- OCCHI CYBERNETICI A FESSURA (Laser Rosso Vivo) -->
-    <polygon points="220,195 240,202 225,206" fill="#ff2a55" filter="url(#laser-glow)"/>
-    <polygon points="280,195 260,202 275,206" fill="#ff2a55" filter="url(#laser-glow)"/>
-
-    <!-- SIMBOLO QUANTISTICO PSI (Ψ) INNESTATO AL CENTRO DEL MENTO -->
-    <path d="M 230 270 L 230 290 Q 230 305, 250 305 Q 270 305, 270 290 L 270 270 M 250 260 L 250 335" 
-          fill="none" stroke="url(#crimson-glow)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#laser-glow)"/>
-  </g>
-
-  <!-- LOGOTIPO TYPOGRAPHY LUXURY: "DEMON" -->
-  <text x="250" y="415" 
-        font-family="-apple-system, BlinkMacSystemFont, 'Montserrat', 'Segoe UI', sans-serif" 
-        font-size="34" 
-        font-weight="900" 
-        letter-spacing="14" 
-        text-anchor="middle" 
-        fill="#ffffff">
-    DEMON
-  </text>
-
-  <!-- SUBTITLE CON PUNTO DI LUCE -->
-  <text x="250" y="445" 
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', monospace" 
-        font-size="10.5" 
-        font-weight="600" 
-        letter-spacing="5" 
-        text-anchor="middle" 
-        fill="#ff2a55" 
-        opacity="0.9">
-    DETERMINISTIC COHERENCE CORE
-  </text>
-
-  <!-- Dettaglio Oro Luxury: Punti di calibrazione angolari -->
-  <circle cx="28" cy="28" r="3" fill="url(#gold-accent)"/>
-  <circle cx="472" cy="28" r="3" fill="url(#gold-accent)"/>
-  <circle cx="28" cy="472" r="3" fill="url(#gold-accent)"/>
-  <circle cx="472" cy="472" r="3" fill="url(#gold-accent)"/>
 </svg>

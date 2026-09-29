@@ -2,40 +2,56 @@
   <defs>
     <linearGradient id="crystalGlow" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#00ff88" />
-      <stop offset="100%" stop-color="#057a55" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#023a26" />
     </linearGradient>
-    <filter id="neonBlurCrystal" x="-20%" y="-20%" width="140%" height="140%">
+    <filter id="glow-crystal" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="8" result="blur" />
       <feMerge>
+        <feMergeNode in="blur" />
         <feMergeNode in="blur" />
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Quantum Octahedron Crystal Facets -->
-  <!-- Top Center Triangle -->
-  <polygon points="250,60 360,200 250,230" fill="#04271a" stroke="url(#crystalGlow)" stroke-width="4" filter="url(#neonBlurCrystal)" />
-  <polygon points="250,60 140,200 250,230" fill="#063826" stroke="url(#crystalGlow)" stroke-width="4" filter="url(#neonBlurCrystal)" />
-  
-  <!-- Outer Flanks Upper -->
-  <polygon points="250,60 360,200 420,230" fill="#021c12" stroke="#00ff88" stroke-width="3" />
-  <polygon points="250,60 140,200 80,230" fill="#021c12" stroke="#00ff88" stroke-width="3" />
+  <!-- Quantum Octahedral Orbitals & Crystal Shards -->
+  <polygon points="250,45 425,250 250,455 75,250" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-dasharray="8,8" opacity="0.4" />
+  <ellipse cx="250" cy="250" rx="190" ry="75" fill="none" stroke="#00ff88" stroke-width="2" stroke-dasharray="10,6" opacity="0.5" transform="rotate(-30 250 250)" />
+  <ellipse cx="250" cy="250" rx="190" ry="75" fill="none" stroke="#00ff88" stroke-width="2" stroke-dasharray="10,6" opacity="0.5" transform="rotate(30 250 250)" />
 
-  <!-- Equatorial Belt -->
-  <polygon points="140,200 250,230 360,200 420,230 250,260 80,230" fill="#0b4a34" stroke="#00ff88" stroke-width="4" />
+  <!-- DEMON MASK EMBLEM - CRYSTALLIZER EDITION -->
+  <g transform="translate(0, 5)">
+    <!-- Back Stealth Armor Shell (Faceted Crystalline Geometry) -->
+    <polygon points="250,85 330,150 375,130 345,250 250,350 155,250 125,130 170,150" 
+             fill="#02150e" stroke="#00ff88" stroke-width="3" filter="url(#glow-crystal)" />
 
-  <!-- Lower Pyramid Facets -->
-  <polygon points="250,440 360,200 250,260" fill="#032418" stroke="#00ff88" stroke-width="4" />
-  <polygon points="250,440 140,200 250,260" fill="#053322" stroke="#00ff88" stroke-width="4" />
-  <polygon points="250,440 360,200 420,230" fill="#01140d" stroke="#00ff88" stroke-width="3" />
-  <polygon points="250,440 140,200 80,230" fill="#01140d" stroke="#00ff88" stroke-width="3" />
+    <!-- Left Horn (Emerald Crystal Spire) -->
+    <path d="M 185 160 L 120 100 L 132 180 L 175 205 Z" 
+          fill="#052e1f" stroke="url(#crystalGlow)" stroke-width="4" filter="url(#glow-crystal)" />
+    <!-- Right Horn (Emerald Crystal Spire) -->
+    <path d="M 315 160 L 380 100 L 368 180 L 325 205 Z" 
+          fill="#052e1f" stroke="url(#crystalGlow)" stroke-width="4" filter="url(#glow-crystal)" />
 
-  <!-- Central Quantum Invariant Seed (The Crystallized Core) -->
-  <circle cx="250" cy="230" r="16" fill="#00ff88" />
-  <circle cx="250" cy="230" r="28" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="6,4" />
+    <!-- Forehead Octahedron Seed -->
+    <polygon points="250,130 290,190 250,225 210,190" 
+             fill="#08422d" stroke="#00ff88" stroke-width="2" />
+    <circle cx="250" cy="175" r="7" fill="#00ff88" filter="url(#glow-crystal)" />
 
-  <!-- Self-Healing Resonance Orbitals -->
-  <ellipse cx="250" cy="240" rx="190" ry="60" fill="none" stroke="#00ff88" stroke-width="2" stroke-opacity="0.5" transform="rotate(-25 250 240)" />
-  <ellipse cx="250" cy="240" rx="190" ry="60" fill="none" stroke="#00ff88" stroke-width="2" stroke-opacity="0.5" transform="rotate(25 250 240)" />
+    <!-- Left Cheek Facet -->
+    <polygon points="210,190 250,225 200,285 165,235" 
+             fill="#041f15" stroke="#0f5c3f" stroke-width="1.5" />
+
+    <!-- Right Cheek Facet -->
+    <polygon points="290,190 250,225 300,285 335,235" 
+             fill="#041f15" stroke="#0f5c3f" stroke-width="1.5" />
+
+    <!-- Cyber Slit Eyes (Bio-Neon Emerald Laser) -->
+    <polygon points="215,200 238,208 222,212" fill="#00ff88" filter="url(#glow-crystal)" />
+    <polygon points="285,200 262,208 278,212" fill="#00ff88" filter="url(#glow-crystal)" />
+
+    <!-- Quantum Psi (Ψ) Chin Trident (Emerald Crystallized Core) -->
+    <path d="M 226 280 L 226 304 Q 226 322, 250 322 Q 274 322, 274 304 L 274 280 M 250 268 L 250 355" 
+          fill="none" stroke="url(#crystalGlow)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow-crystal)" />
+  </g>
 </svg>

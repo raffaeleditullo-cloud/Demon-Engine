@@ -2,37 +2,61 @@
   <defs>
     <linearGradient id="sentinelGlow" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ff9900" />
-      <stop offset="100%" stop-color="#ff3300" />
+      <stop offset="50%" stop-color="#ff5500" />
+      <stop offset="100%" stop-color="#801b00" />
     </linearGradient>
-    <filter id="neonBlurSentinel" x="-20%" y="-20%" width="140%" height="140%">
+    <filter id="glow-sentinel" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="8" result="blur" />
       <feMerge>
+        <feMergeNode in="blur" />
         <feMergeNode in="blur" />
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Outer Defensive Hexagon -->
-  <polygon points="250,55 390,135 390,305 250,385 110,305 110,135" fill="#180b03" stroke="url(#sentinelGlow)" stroke-width="8" filter="url(#neonBlurSentinel)" />
+  <!-- Outer Defensive Hexagonal Aegis Perimeter -->
+  <polygon points="250,25 435,130 435,370 250,475 65,370 65,130" fill="none" stroke="#ff9900" stroke-width="2.5" stroke-dasharray="12,8" opacity="0.45" />
+  <circle cx="250" cy="250" r="190" fill="none" stroke="#ff5500" stroke-width="1.5" stroke-dasharray="6,8" opacity="0.4" />
 
-  <!-- Inner Blast-Radius Perimeter -->
-  <polygon points="250,90 360,155 360,285 250,350 140,285 140,155" fill="#261004" stroke="#ff9900" stroke-width="3" stroke-dasharray="10,6" />
+  <!-- Ballistic Shield Chevrons Top & Bottom -->
+  <path d="M 230 430 L 250 455 L 270 430" fill="none" stroke="#ff9900" stroke-width="4" stroke-linecap="round" />
+  <path d="M 220 450 L 250 475 L 280 450" fill="none" stroke="#ffaa00" stroke-width="5" stroke-linecap="round" filter="url(#glow-sentinel)" />
 
-  <!-- Fortress Cross-Braces / Defense Grid -->
-  <line x1="250" y1="90" x2="250" y2="350" stroke="#ffaa00" stroke-width="4" />
-  <line x1="140" y1="155" x2="360" y2="285" stroke="#ffaa00" stroke-width="2.5" opacity="0.6" />
-  <line x1="140" y1="285" x2="360" y2="155" stroke="#ffaa00" stroke-width="2.5" opacity="0.6" />
+  <path d="M 230 70 L 250 45 L 270 70" fill="none" stroke="#ff9900" stroke-width="4" stroke-linecap="round" />
 
-  <!-- Central Locking Aegis Core -->
-  <circle cx="250" cy="220" r="38" fill="#120601" stroke="#ff7700" stroke-width="6" />
-  <polygon points="250,195 270,235 230,235" fill="#ffaa00" />
-  <circle cx="250" cy="220" r="10" fill="#fff" />
+  <!-- DEMON MASK EMBLEM - SENTINEL EDITION -->
+  <g transform="translate(0, 5)">
+    <!-- Back Stealth Armor Shell (Reinforced Ballistic Plate) -->
+    <polygon points="250,85 330,150 375,130 345,250 250,350 155,250 125,130 170,150" 
+             fill="#140702" stroke="#ff9900" stroke-width="3.5" filter="url(#glow-sentinel)" />
 
-  <!-- Outer Containment Chevron Accents -->
-  <path d="M 230 420 L 250 445 L 270 420" fill="none" stroke="#ff7700" stroke-width="5" stroke-linecap="round" />
-  <path d="M 220 440 L 250 470 L 280 440" fill="none" stroke="#ff9900" stroke-width="6" stroke-linecap="round" />
-  
-  <line x1="75" y1="115" x2="100" y2="130" stroke="#ff7700" stroke-width="4" />
-  <line x1="425" y1="115" x2="400" y2="130" stroke="#ff7700" stroke-width="4" />
+    <!-- Left Horn (Hardened Defense Spike) -->
+    <path d="M 185 160 L 120 100 L 132 180 L 175 205 Z" 
+          fill="#220d04" stroke="url(#sentinelGlow)" stroke-width="4" filter="url(#glow-sentinel)" />
+    <!-- Right Horn (Hardened Defense Spike) -->
+    <path d="M 315 160 L 380 100 L 368 180 L 325 205 Z" 
+          fill="#220d04" stroke="url(#sentinelGlow)" stroke-width="4" filter="url(#glow-sentinel)" />
+
+    <!-- Forehead Shield Vault -->
+    <polygon points="250,130 290,190 250,225 210,190" 
+             fill="#2d1105" stroke="#ff7700" stroke-width="2" />
+    <polygon points="250,150 268,185 232,185" fill="#ffaa00" filter="url(#glow-sentinel)" />
+
+    <!-- Left Cheek Facet -->
+    <polygon points="210,190 250,225 200,285 165,235" 
+             fill="#180802" stroke="#4a1c09" stroke-width="1.5" />
+
+    <!-- Right Cheek Facet -->
+    <polygon points="290,190 250,225 300,285 335,235" 
+             fill="#180802" stroke="#4a1c09" stroke-width="1.5" />
+
+    <!-- Cyber Slit Eyes (Molten Laser Orange) -->
+    <polygon points="215,200 238,208 222,212" fill="#ff9900" filter="url(#glow-sentinel)" />
+    <polygon points="285,200 262,208 278,212" fill="#ff9900" filter="url(#glow-sentinel)" />
+
+    <!-- Quantum Psi (Ψ) Chin Trident (Molten Shield Core) -->
+    <path d="M 226 280 L 226 304 Q 226 322, 250 322 Q 274 322, 274 304 L 274 280 M 250 268 L 250 355" 
+          fill="none" stroke="url(#sentinelGlow)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow-sentinel)" />
+  </g>
 </svg>

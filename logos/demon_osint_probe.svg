@@ -2,43 +2,90 @@
   <defs>
     <linearGradient id="osintGlow" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#3b82f6" />
       <stop offset="100%" stop-color="#1d4ed8" />
     </linearGradient>
-    <filter id="neonBlurOsint" x="-20%" y="-20%" width="140%" height="140%">
+    <radialGradient id="radarSweep" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3" />
+      <stop offset="80%" stop-color="#06b6d4" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow-osint" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="8" result="blur" />
       <feMerge>
+        <feMergeNode in="blur" />
         <feMergeNode in="blur" />
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Outer Radar Range Rings -->
-  <circle cx="250" cy="250" r="190" fill="#040c1a" stroke="url(#osintGlow)" stroke-width="5" filter="url(#neonBlurOsint)" />
-  <circle cx="250" cy="250" r="135" fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="14,8" />
-  <circle cx="250" cy="250" r="80" fill="none" stroke="#3b82f6" stroke-width="2" />
+  <!-- Deep Recon Radar Range Rings -->
+  <circle cx="250" cy="250" r="195" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="12,8" opacity="0.45" />
+  <circle cx="250" cy="250" r="145" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6,6" opacity="0.6" />
+  <circle cx="250" cy="250" r="95" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="3,6" opacity="0.5" />
 
-  <!-- Crosshairs / Reticle Targeting Cross -->
-  <line x1="250" y1="40" x2="250" y2="460" stroke="#06b6d4" stroke-width="3" stroke-dasharray="8,6" />
-  <line x1="40" y1="250" x2="460" y2="250" stroke="#06b6d4" stroke-width="3" stroke-dasharray="8,6" />
+  <!-- Tactical Radar Sweep Cone -->
+  <path d="M 250 250 L 388 112 A 195 195 0 0 0 250 55 Z" fill="url(#radarSweep)" opacity="0.6" />
 
-  <!-- Sweeping Sonar Beam Arc (Radar Sweep Cone) -->
-  <path d="M 250 250 L 385 115 A 190 190 0 0 0 250 60 Z" fill="#06b6d4" fill-opacity="0.25" />
+  <!-- Targeting Reticle Crosshairs (Dotted Telemetry Lines) -->
+  <line x1="250" y1="35" x2="250" y2="465" stroke="#06b6d4" stroke-width="2" stroke-dasharray="6,6" opacity="0.4" />
+  <line x1="35" y1="250" x2="465" y2="250" stroke="#06b6d4" stroke-width="2" stroke-dasharray="6,6" opacity="0.4" />
 
-  <!-- Deep Target Blips (Triangulated Data Nodes) -->
-  <circle cx="340" cy="140" r="12" fill="#06b6d4" />
-  <circle cx="340" cy="140" r="20" fill="none" stroke="#fff" stroke-width="2" />
-  
-  <circle cx="160" cy="190" r="8" fill="#3b82f6" />
-  <circle cx="310" cy="330" r="9" fill="#06b6d4" />
+  <!-- Triangulated Intel Target Blips -->
+  <circle cx="345" cy="125" r="5" fill="#06b6d4" filter="url(#glow-osint)" />
+  <circle cx="345" cy="125" r="12" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="3,3" />
 
-  <!-- Center Eye / Pupil Sensor Aperture -->
-  <circle cx="250" cy="250" r="28" fill="#020712" stroke="#06b6d4" stroke-width="5" />
-  <circle cx="250" cy="250" r="12" fill="#fff" />
+  <circle cx="155" cy="140" r="4" fill="#3b82f6" filter="url(#glow-osint)" />
+  <circle cx="360" cy="340" r="4.5" fill="#06b6d4" filter="url(#glow-osint)" />
+  <circle cx="130" cy="320" r="4" fill="#3b82f6" />
 
-  <!-- Corner Tactical Bearing Notches -->
-  <path d="M 120 70 L 60 70 L 60 130" fill="none" stroke="#06b6d4" stroke-width="4" />
-  <path d="M 380 70 L 440 70 L 440 130" fill="none" stroke="#06b6d4" stroke-width="4" />
-  <path d="M 120 430 L 60 430 L 60 370" fill="none" stroke="#06b6d4" stroke-width="4" />
-  <path d="M 380 430 L 440 430 L 440 370" fill="none" stroke="#06b6d4" stroke-width="4" />
+  <!-- Tactical Bearing Notches -->
+  <path d="M 90 60 L 50 60 L 50 100" fill="none" stroke="#06b6d4" stroke-width="3" opacity="0.7" />
+  <path d="M 410 60 L 450 60 L 450 100" fill="none" stroke="#06b6d4" stroke-width="3" opacity="0.7" />
+  <path d="M 90 440 L 50 440 L 50 400" fill="none" stroke="#06b6d4" stroke-width="3" opacity="0.7" />
+  <path d="M 410 440 L 450 440 L 450 400" fill="none" stroke="#06b6d4" stroke-width="3" opacity="0.7" />
+
+  <!-- DEMON MASK EMBLEM - OSINT PROBE EDITION -->
+  <g transform="translate(0, 5)">
+    <!-- Back Stealth Armor Shell -->
+    <polygon points="250,85 330,150 375,130 345,250 250,350 155,250 125,130 170,150" 
+             fill="#030b17" stroke="#06b6d4" stroke-width="3" filter="url(#glow-osint)" />
+
+    <!-- Left Horn (Tactical Antenna Array) -->
+    <path d="M 185 160 L 120 100 L 132 180 L 175 205 Z" 
+          fill="#08182b" stroke="url(#osintGlow)" stroke-width="4" filter="url(#glow-osint)" />
+    <!-- Right Horn (Tactical Antenna Array) -->
+    <path d="M 315 160 L 380 100 L 368 180 L 325 205 Z" 
+          fill="#08182b" stroke="url(#osintGlow)" stroke-width="4" filter="url(#glow-osint)" />
+
+    <!-- Forehead Diamond Sensor Array -->
+    <polygon points="250,130 290,190 250,225 210,190" 
+             fill="#0b2440" stroke="#06b6d4" stroke-width="2" />
+    <circle cx="250" cy="175" r="5" fill="#06b6d4" filter="url(#glow-osint)" />
+    <line x1="250" y1="160" x2="250" y2="190" stroke="#3b82f6" stroke-width="1.5" />
+    <line x1="235" y1="175" x2="265" y2="175" stroke="#3b82f6" stroke-width="1.5" />
+
+    <!-- Left Cheek Facet -->
+    <polygon points="210,190 250,225 200,285 165,235" 
+             fill="#051424" stroke="#123254" stroke-width="1.5" />
+
+    <!-- Right Cheek Facet -->
+    <polygon points="290,190 250,225 300,285 335,235" 
+             fill="#051424" stroke="#123254" stroke-width="1.5" />
+
+    <!-- Cyber Slit Eye (Left - Standard Blue Laser) -->
+    <polygon points="215,200 238,208 222,212" fill="#06b6d4" filter="url(#glow-osint)" />
+
+    <!-- Cyber Eye (Right - Tactical Targeting Monocle Reticle) -->
+    <polygon points="285,200 262,208 278,212" fill="#06b6d4" filter="url(#glow-osint)" />
+    <circle cx="273" cy="207" r="14" fill="none" stroke="#06b6d4" stroke-width="2.5" filter="url(#glow-osint)" />
+    <circle cx="273" cy="207" r="6" fill="#3b82f6" />
+    <line x1="255" y1="207" x2="291" y2="207" stroke="#06b6d4" stroke-width="1.5" />
+    <line x1="273" y1="189" x2="273" y2="225" stroke="#06b6d4" stroke-width="1.5" />
+
+    <!-- Quantum Psi (Ψ) Chin Trident (Deep Radar Cyan Core) -->
+    <path d="M 226 280 L 226 304 Q 226 322, 250 322 Q 274 322, 274 304 L 274 280 M 250 268 L 250 355" 
+          fill="none" stroke="url(#osintGlow)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow-osint)" />
+  </g>
 </svg>
