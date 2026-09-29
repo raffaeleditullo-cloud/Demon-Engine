@@ -1,0 +1,12 @@
+{
+  "fde48e99ab0b1fbd": {
+    "query": "Node.js 22 LTS novita caratteristiche principali",
+    "timestamp": "2026-09-29 08:55:08",
+    "winner_id": "SRC_B",
+    "title": "Node.js 22 (LTS) - What's New, Support Lifecycle &",
+    "content": "Apr 24, 2024 · Discover what's new in Node.js 22. Complete release history, support lifecycle, release dates, LTS schedule and End of Life (EOL) status. Node.js is an... Jan 13, 2026 · Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts. May 8, 2026 · 文章浏览阅读309次，点赞8次，收藏6次。 Node.js 22 于 2024 年 4 月发布，并在 2024 年 10 月成为 LTS（长期支持）版本。 本文基于 Node.js 官方博客和发布说明，深入解析 22 版本的核心特性、性能优化与实战应用。 Mar 19, 2026 · Node.js 22 entered LTS (Long Term Support) in October 2024. It includes native test runner maturity, WebSocket client built-in, require (ESM) support, the V8 Maglev compiler, and performance improvements up to 30% for CPU-bound tasks. Dec 15, 2025 · Explicamos as principais novas funcionalidades do Node.js 22, que se tornou LTS em outubro de 2024. Suporte a require(esm), adição da API WebSocket e mais. Jun 19, 2026 · A practical tour of what actually changed in Node.js 22: require(esm) interop, a built-in WebSocket client, a stable watch mode, and the V8 12.4 upgrade underneath it all.",
+    "url": "https://versionlog.com/nodejs/22/",
+    "coherence_percentage": "38.09%",
+    "latency_ms": 0.06620003841817379
+  }
+}
