@@ -56,7 +56,6 @@ from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "skill_demon_demo"))
 
 from demon_engine import DemonEngine, DemonHypothesis  # noqa: E402
 from demon_agent_filter import (  # noqa: E402
