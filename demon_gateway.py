@@ -19,8 +19,21 @@ import time
 import hashlib
 import subprocess
 import argparse
+import asyncio
+import io
+import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
+
+try:
+    import psutil
+except ImportError:
+    psutil = None
+
+try:
+    import edge_tts
+except ImportError:
+    edge_tts = None
 
 # Assicura encoding UTF-8 su Windows terminal
 if hasattr(sys.stdout, 'reconfigure'):
@@ -38,6 +51,42 @@ except ImportError:
         from duckduckgo_search import DDGS
     except ImportError:
         DDGS = None
+
+# Cache in-memory per file audio TTS ad altissima fedeltà
+TTS_CACHE = {}
+
+def synth_tts_bytes(text: str) -> bytes:
+    clean = text.strip()
+    if not clean or not edge_tts:
+        return b""
+    if clean in TTS_CACHE:
+        return TTS_CACHE[clean]
+    try:
+        async def _stream():
+            communicate = edge_tts.Communicate(clean, "it-IT-GiuseppeNeural")
+            buf = io.BytesIO()
+            async for chunk in communicate.stream():
+                if chunk["type"] == "audio":
+                    buf.write(chunk["data"])
+            return buf.getvalue()
+        audio_data = asyncio.run(_stream())
+        if audio_data:
+            TTS_CACHE[clean] = audio_data
+        return audio_data
+    except Exception as e:
+        print(f"[TTS WARNING] Errore sintesi audio: {e}")
+        return b""
+
+def prewarm_tts():
+    """Pre-compila in background i messaggi tattici chiave per latenza zero"""
+    phrases = [
+        "Comando autorizzato ed eseguito con successo sul ROG Strix.",
+        "Attenzione. Tentativo distruttivo neutralizzato dalla corte DEMON. Computer protetto.",
+        "Fatto certificato reperito con successo."
+    ]
+    for p in phrases:
+        synth_tts_bytes(p)
+
 
 
 class DemonGateway:
@@ -370,7 +419,22 @@ class DemonHTTPHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
-        if parsed.path == "/" or parsed.path == "/cockpit":
+        if parsed.path in ["/", "/warroom"]:
+            warroom_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "demon_war_room.html")
+            try:
+                with open(warroom_file, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+            except Exception as e:
+                self.send_error(500, f"Warroom file error: {e}")
+                return
+
+        if parsed.path == "/cockpit":
             cockpit_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "voice_cockpit.html")
             try:
                 with open(cockpit_file, "rb") as f:
@@ -387,7 +451,7 @@ class DemonHTTPHandler(SimpleHTTPRequestHandler):
 
         if parsed.path == "/api/status":
             status_data = {
-                "engine": "DEMON Core 2.0",
+                "engine": "DEMON Core 2.0 // War Room Edition",
                 "status": "ONLINE",
                 "reflex_cache_path": KB_FILE,
                 "timestamp": time.time()
@@ -400,13 +464,57 @@ class DemonHTTPHandler(SimpleHTTPRequestHandler):
             self.wfile.write(body)
             return
 
+        if parsed.path == "/api/system_stats":
+            cpu_pct = 0.0
+            ram_pct = 0.0
+            if psutil:
+                try:
+                    cpu_pct = psutil.cpu_percent(interval=None)
+                    ram_pct = psutil.virtual_memory().percent
+                except Exception:
+                    pass
+            stats_data = {
+                "cpu_percent": round(cpu_pct, 1),
+                "ram_percent": round(ram_pct, 1),
+                "timestamp": time.time()
+            }
+            body = json.dumps(stats_data).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
         super().do_GET()
 
     def do_POST(self):
         parsed = urlparse(self.path)
+        content_length = int(self.headers.get("Content-Length", 0))
+        raw_body = self.rfile.read(content_length).decode("utf-8")
+
+        if parsed.path == "/api/tts":
+            try:
+                data = json.loads(raw_body)
+                text_to_speak = data.get("text", "")
+            except Exception:
+                text_to_speak = raw_body
+
+            audio_bytes = synth_tts_bytes(text_to_speak)
+            if not audio_bytes:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(b'{"error": "TTS synthesis failed"}')
+                return
+
+            self.send_response(200)
+            self.send_header("Content-Type", "audio/mpeg")
+            self.send_header("Content-Length", str(len(audio_bytes)))
+            self.end_headers()
+            self.wfile.write(audio_bytes)
+            return
+
         if parsed.path == "/api/command":
-            content_length = int(self.headers.get("Content-Length", 0))
-            raw_body = self.rfile.read(content_length).decode("utf-8")
             try:
                 data = json.loads(raw_body)
                 command_text = data.get("text", "")
@@ -438,11 +546,18 @@ def run_server(port: int = 8888):
     DemonHTTPHandler.gateway = gateway
     server_address = ('127.0.0.1', port)
     httpd = HTTPServer(server_address, DemonHTTPHandler)
+
+    # Avvia pre-riscaldamento TTS in background
+    t = threading.Thread(target=prewarm_tts, daemon=True)
+    t.start()
+
     print("=" * 75)
-    print(f" DEMON GATEWAY SERVER ATTIVO SU: http://127.0.0.1:{port}".center(75))
-    print(f" Voice Cockpit: http://127.0.0.1:{port}/cockpit".center(75))
+    print(f" DEMON WAR ROOM GATEWAY ATTIVO SU: http://127.0.0.1:{port}".center(75))
+    print(f" ROG Strix Deck: http://127.0.0.1:{port}/warroom".center(75))
+    print(f" Classic Cockpit: http://127.0.0.1:{port}/cockpit".center(75))
     print("=" * 75)
-    print("In ascolto di richieste vocali, web consensus e safe dispatch...\n")
+    print("In ascolto di richieste vocali, telemetria hardware e audio neurale...\n")
+
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
