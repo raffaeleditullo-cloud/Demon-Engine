@@ -13,7 +13,7 @@
 
 **A lightweight, pure-Python algorithmic layer that replaces sequential trial-and-error in LLMs and AI agents with parallel superposition, phase-difference filtering, and deterministic eigenstate collapse.**
 
-[Interactive Dashboard (index.html)](index.html) • [Mathematical Mechanics](DEMON_MECHANICS.md) • [Principles & Limits](LIMITS_AND_RULES.md)
+[Model Context Protocol (MCP)](demon_mcp.py) • [Mathematical Mechanics](DEMON_MECHANICS.md) • [Principles & Limits](LIMITS_AND_RULES.md)
 
 ---
 
@@ -159,32 +159,53 @@ DEMON Engine operates as a full-stack, zero-token local reflex engine:
 └───────────────────────────────────────────────┘
 ```
 
-### 🎙️ Quickstart: Voice Cockpit & Unified Gateway
-Start the local gateway daemon on port `8888`:
-```bash
-python demon_gateway.py --serve --port 8888
-```
-Then open your browser at **`http://127.0.0.1:8888/cockpit`** to interact directly via microphone or quick-test chips!
+---
 
-### 🤖 Model Context Protocol (MCP) Server
-To plug DEMON directly into Claude Desktop, Cursor, Antigravity, or Terminal AI via stdio:
-```bash
-python demon_mcp.py
-```
-**Exposed Tools:**
-* `demon_pipeline`: End-to-end intent routing, reflex cache, web consensus, and safe execution.
-* `demon_raw_collapse`: Raw Born-rule wave interference calculation across candidate states.
+## 🤖 Universal Model Context Protocol (MCP) Server
+
+DEMON exposes a high-speed, zero-dependency stdio JSON-RPC MCP server (`demon_mcp.py`) that can be plugged directly into **any AI agent**.
+
+### 🛠️ Exposed Tools:
+* **`demon_pipeline`**: End-to-end intent classification, reflex cache lookups (0.001ms), live multi-source web consensus, and safe sandboxed OS action dispatch.
+* **`demon_raw_collapse`**: Raw Born-rule wave interference calculation across candidate states.
 
 ---
 
-## 🖥️ Local Dashboards
+### 🔌 Connecting DEMON to Your Agents:
 
-Demon Engine includes two standalone zero-dependency interfaces:
-* **`voice_cockpit.html`**: Luxury obsidian & crimson cyber cockpit with real-time audio wave canvas, live 4-stage execution cards, and terminal logs.
-* **`dashboard.html` / `index.html`**: Mathematical quantum-coherence matrix visualizer.
+#### 1. Claude Code CLI
+Add DEMON directly to your Claude Code workspace:
+```bash
+claude mcp add demon-engine python c:/Users/stree/Desktop/DEMON/demon_mcp.py
+```
+
+#### 2. Claude Desktop (`claude_desktop_config.json`)
+```json
+{
+  "mcpServers": {
+    "demon-engine": {
+      "command": "python",
+      "args": ["c:/Users/stree/Desktop/DEMON/demon_mcp.py"]
+    }
+  }
+}
+```
+
+#### 3. Cursor (`.cursor/mcp.json`)
+```json
+{
+  "mcpServers": {
+    "demon-engine": {
+      "command": "python",
+      "args": ["c:/Users/stree/Desktop/DEMON/demon_mcp.py"]
+    }
+  }
+}
+```
 
 ---
 
 ## 📄 License
 MIT License. Inspired by biological quantum efficiency for clean, reliable software engineering.
+
 

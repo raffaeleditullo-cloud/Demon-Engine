@@ -38,5 +38,15 @@
     "url": "https://www.pcrisk.com/removal-guides/30422-zero-token-distribution-scam",
     "coherence_percentage": 33.3,
     "latency_ms": 0.145
+  },
+  "509f562907a86428": {
+    "query": "Controlla il mio il mio pc",
+    "timestamp": "2026-09-29 18:50:24",
+    "winner_id": "SRC_1",
+    "title": "Valuta il mio PC - Test le prestazioni PC per il gaming - IObit",
+    "content": "Questo tool di verifica specifiche permette di valuta il mio pc e test pc: confronta le prestazioni del tuo PC o laptop con i giochi più popolari e il nostro database di configurazioni utente.",
+    "url": "https://www.iobit.com/it/valuta-il-mio-pc.php",
+    "coherence_percentage": 33.3,
+    "latency_ms": 0.179
   }
 }
