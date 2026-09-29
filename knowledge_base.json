@@ -18,5 +18,25 @@
     "url": "https://www.syncfusion.com/blogs/post/whats-new-in-node-js-22",
     "coherence_percentage": 33.3,
     "latency_ms": 0.053
+  },
+  "3c634e17581640c2": {
+    "query": "Ciao Damon",
+    "timestamp": "2026-09-29 18:07:03",
+    "winner_id": "SRC_1",
+    "title": "Ciao amore, ciao",
+    "content": "\"Ciao amore, ciao\" (Italian pronunciation: [ˈtʃaːo aˈmoːre ˈtʃaːo]; \"Bye, My Love, Bye\") is a 1967 song written by Italian singer-songwriter Luigi Tenco, first performed at the Sanremo Music Festival 1967, in two separate renditions, by Tenco and Italian-French singer Dalida.The song is best remembered for being Tenco's last performance before his apparent suicide on 27 January 1967, upon its elimination from the contest. One month later, Dalida, who was dating Tenco at the time of his death, attempted suicide as well.",
+    "url": "https://en.wikipedia.org/wiki/Ciao_amore,_ciao",
+    "coherence_percentage": 33.3,
+    "latency_ms": 0.112
+  },
+  "c9e9fc2d38ee2692": {
+    "query": "Disattiva Zero token reflex",
+    "timestamp": "2026-09-29 18:29:29",
+    "winner_id": "SRC_1",
+    "title": "$ZERO Token Distribution Scam - Removal and recovery steps - PCrisk",
+    "content": "The scam claims to be distributing ZERO tokens. It must be emphasized that this token giveaway is fake, and it is not associated with any existing platforms or entities.",
+    "url": "https://www.pcrisk.com/removal-guides/30422-zero-token-distribution-scam",
+    "coherence_percentage": 33.3,
+    "latency_ms": 0.145
   }
 }

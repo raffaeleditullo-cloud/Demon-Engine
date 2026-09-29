@@ -6,34 +6,16 @@
   <title>DEMON // WAR ROOM - ROG STRIX SENTINEL DECK</title>
   <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link rel="stylesheet" href="demon-ui.css">
   <style>
     :root {
-      --bg: #030305;
       --panel-bg: #08090f;
       --panel-border: #141724;
       --panel-glow: rgba(255, 42, 85, 0.15);
-      --crimson: #ff2a55;
-      --crimson-bright: #ff003c;
-      --crimson-glow: rgba(255, 42, 85, 0.45);
-      --crimson-dim: rgba(255, 42, 85, 0.08);
-      --text: #f8fafc;
-      --text-muted: #64748b;
-      --text-dim: #334155;
-      --success: #00ff88;
-      --success-glow: rgba(0, 255, 136, 0.35);
-      --warning: #ffb800;
-      --cyan: #00f0ff;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, monospace; }
-    
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
       overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
       user-select: none;
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.06), transparent 45%),
@@ -129,11 +111,6 @@
       background: var(--success);
       box-shadow: 0 0 8px var(--success);
       animation: pulse 1.4s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.85); }
     }
 
     /* MAIN WAR ROOM GRID */
@@ -392,15 +369,8 @@
     .mic-laser-btn {
       width: 90px;
       height: 90px;
-      border-radius: 50%;
       background: #090b14;
-      border: 2px solid var(--crimson);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
       box-shadow: 0 0 25px rgba(255, 42, 85, 0.25), inset 0 0 15px rgba(255, 42, 85, 0.2);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .mic-laser-btn:hover {
@@ -423,7 +393,6 @@
     .mic-laser-btn svg {
       width: 38px;
       height: 38px;
-      fill: #fff;
     }
 
     .transcript-box {
@@ -530,33 +499,16 @@
       border: 1px solid #151827;
       border-radius: 6px;
       padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
       gap: 4px;
-      transition: all 0.3s;
     }
 
     .card-step.active {
-      border-color: var(--crimson);
       box-shadow: 0 0 12px rgba(255, 42, 85, 0.2);
     }
 
-    .card-step.success {
-      border-color: var(--success);
-    }
-
-    .card-step.danger {
-      border-color: var(--crimson-bright);
-    }
-
     .step-head {
-      display: flex;
-      justify-content: space-between;
       font-size: 10px;
       font-weight: 800;
-      letter-spacing: 1px;
-      color: var(--text-muted);
-      text-transform: uppercase;
     }
 
     .step-body {
@@ -580,10 +532,59 @@
       gap: 4px;
     }
 
-    .war-terminal span.t-crimson { color: var(--crimson); font-weight: bold; }
-    .war-terminal span.t-green { color: var(--success); font-weight: bold; }
-    .war-terminal span.t-cyan { color: var(--cyan); }
-    .war-terminal span.t-amber { color: var(--warning); }
+    .war-terminal .t-crimson,
+    .war-terminal .t-green { font-weight: bold; }
+
+    /* ========================================================
+       RESPONSIVE: sopra 1100px vale la griglia a 3 colonne originale
+       ======================================================== */
+    @media (max-width: 1100px) {
+      .topbar { flex-wrap: wrap; gap: 10px 20px; }
+
+      /* Core in alto a tutta larghezza, abilità e telemetria affiancate sotto */
+      .warroom-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "core core"
+          "skills side";
+        height: auto;
+      }
+      .warroom-grid > .panel { grid-area: skills; }
+      .center-column { grid-area: core; }
+      .right-column { grid-area: side; overflow: visible; }
+
+      .core-viewport { flex: none; height: 480px; }
+      .skill-matrix { overflow: visible; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar { padding: 12px 16px; }
+      .brand-wrap svg { width: 36px; height: 36px; }
+      .brand-titles h1 { font-size: 15px; letter-spacing: 2px; flex-wrap: wrap; gap: 6px; }
+      .brand-titles p { font-size: 9px; letter-spacing: 1px; }
+      .top-telemetry { width: 100%; flex-wrap: wrap; gap: 6px 16px; font-size: 10px; }
+
+      /* Colonna singola in ordine di priorità: Core, pipeline e HW, abilità */
+      .warroom-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "core"
+          "side"
+          "skills";
+        gap: 12px;
+        padding: 12px 16px;
+      }
+
+      .core-viewport { height: 400px; }
+      .core-overlay { top: 10px; left: 10px; right: 10px; flex-wrap: wrap; gap: 6px; }
+      .core-tag { font-size: 9px; letter-spacing: 1px; }
+      .core-controls { bottom: 16px; width: 100%; padding: 0 16px; }
+      .mic-laser-btn { width: 76px; height: 76px; }
+      .mic-laser-btn svg { width: 32px; height: 32px; }
+      .transcript-box { max-width: 100%; }
+
+      .preset-btn { flex: 1 1 100%; }
+    }
   </style>
 </head>
 <body>
@@ -738,7 +739,7 @@
         </div>
 
         <div class="core-controls">
-          <button class="mic-laser-btn" id="micBtn" onclick="toggleVoiceInput()">
+          <button class="mic-laser-btn demon-mic" id="micBtn" onclick="toggleVoiceInput()">
             <svg viewBox="0 0 24 24">
               <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
               <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
@@ -831,6 +832,7 @@
 
   </div>
 
+  <script src="demon-core.js"></script>
   <script>
     /* ========================================================
        1. WEB AUDIO API SYNTHESIZER (Effetti Sonori Tattici)
@@ -873,7 +875,40 @@
        ======================================================== */
     let scene, camera, renderer, particleSphere, outerRing, innerRing, coreMesh;
     let isSpeaking = false;
-    let coreGlowIntensity = 1.0;
+    let basePositions = null, shockNoise = null;
+    const clock = new THREE.Clock();
+
+    // Stato reattivo dell'Orb: i target arrivano da telemetria e verdetti, l'animazione li insegue
+    const orb = {
+      cpu: 0, ram: 0,        // target 0..1 da /api/system_stats
+      cpuS: 0, ramS: 0,      // valori smussati usati dal render
+      shock: 0,              // impulso BLOCKED 1 → 0
+      glow: 0,               // impulso verdetto positivo 1 → 0
+      online: true,          // gateway 8888 raggiungibile
+      hwEnabled: true,       // skill "ROG Hardware Monitor" attiva
+      phase: 0,              // fase accumulata della pulsazione
+      displaced: false       // particelle fuori posizione dopo uno shock
+    };
+
+    const ORB_COLORS = {
+      crimson: new THREE.Color(0xff2a55),
+      hot: new THREE.Color(0xffb800),
+      flash: new THREE.Color(0xffffff),
+      success: new THREE.Color(0x00ff88),
+      idle: new THREE.Color(0x64748b)
+    };
+    const orbColor = new THREE.Color();
+
+    function setOrbTelemetry(cpuPct, ramPct) {
+      orb.cpu = Math.min(Math.max(cpuPct / 100, 0), 1);
+      orb.ram = Math.min(Math.max(ramPct / 100, 0), 1);
+      orb.online = true;
+    }
+
+    function triggerOrbVerdict(blocked) {
+      if (blocked) orb.shock = 1;
+      else orb.glow = 1;
+    }
 
     function initThree() {
       const container = document.querySelector('.core-viewport');
@@ -887,7 +922,7 @@
 
       renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       // Sfera Particellare
       const partGeo = new THREE.BufferGeometry();
@@ -914,6 +949,11 @@
       particleSphere = new THREE.Points(partGeo, partMat);
       scene.add(particleSphere);
 
+      // Posizioni di riposo e spinta radiale per particella, per l'onda d'urto BLOCKED
+      basePositions = positions.slice();
+      shockNoise = new Float32Array(count);
+      for (let i = 0; i < count; i++) shockNoise[i] = 0.2 + Math.random() * 1.4;
+
       // Anello Orbitale Esterno
       const ringGeo = new THREE.RingGeometry(6.6, 6.75, 64);
       const ringMat = new THREE.MeshBasicMaterial({ color: 0xff2a55, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
@@ -933,7 +973,10 @@
       coreMesh = new THREE.Mesh(icoGeo, icoMat);
       scene.add(coreMesh);
 
-      window.addEventListener('resize', onWindowResize);
+      // Il viewport cambia dimensione anche quando il layout responsive si riorganizza
+      if ('ResizeObserver' in window) new ResizeObserver(onWindowResize).observe(container);
+      else window.addEventListener('resize', onWindowResize);
+      onWindowResize();
       animateThree();
     }
 
@@ -942,7 +985,10 @@
       if (!container) return;
       const width = container.clientWidth;
       const height = container.clientHeight;
+      if (!width || !height) return;
       camera.aspect = width / height;
+      // Su viewport verticali la camera arretra perché l'anello esterno resti nel campo visivo
+      camera.position.z = Math.max(18, 16 / camera.aspect);
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     }
@@ -950,26 +996,66 @@
     function animateThree() {
       requestAnimationFrame(animateThree);
 
-      const rotSpeed = isSpeaking ? 0.025 : 0.007;
-      particleSphere.rotation.y += rotSpeed;
-      particleSphere.rotation.x += rotSpeed * 0.4;
+      const dt = Math.min(clock.getDelta(), 0.1);
+      const f = dt * 60; // le velocità originali erano tarate per frame a 60fps
 
-      outerRing.rotation.z += 0.01;
-      outerRing.rotation.x = Math.sin(Date.now() * 0.001) * 0.4;
+      // Insegue i target in ~1s: la telemetria arriva ogni 2.5s, l'Orb non deve scattare
+      const linked = orb.online && orb.hwEnabled;
+      const k = 1 - Math.exp(-dt * 2.5);
+      orb.cpuS += ((linked ? orb.cpu : 0) - orb.cpuS) * k;
+      orb.ramS += ((linked ? orb.ram : 0) - orb.ramS) * k;
+      orb.shock = Math.max(0, orb.shock - dt * 0.8);
+      orb.glow = Math.max(0, orb.glow - dt * 1.2);
 
-      innerRing.rotation.y -= 0.015;
+      // Rotazione: la CPU accelera fino a 3x, lo shock imprime uno strappo
+      const rotSpeed = (isSpeaking ? 0.025 : 0.007 * (1 + orb.cpuS * 2)) + orb.shock * 0.06;
+      particleSphere.rotation.y += rotSpeed * f;
+      particleSphere.rotation.x += rotSpeed * 0.4 * f;
 
-      coreMesh.rotation.y -= 0.012;
-      coreMesh.rotation.x += 0.008;
+      outerRing.rotation.z += (0.01 + orb.cpuS * 0.02) * f;
+      outerRing.rotation.x = Math.sin(clock.elapsedTime) * 0.4;
 
-      if (isSpeaking) {
-        const pulse = 1.0 + Math.sin(Date.now() * 0.02) * 0.12;
-        particleSphere.scale.set(pulse, pulse, pulse);
-        coreMesh.scale.set(pulse, pulse, pulse);
-      } else {
-        particleSphere.scale.set(1, 1, 1);
-        coreMesh.scale.set(1, 1, 1);
+      innerRing.rotation.y -= (0.015 + orb.ramS * 0.02) * f;
+
+      coreMesh.rotation.y -= 0.012 * f;
+      coreMesh.rotation.x += 0.008 * f;
+
+      // Pulsazione: frequenza dalla CPU, ampiezza dalla RAM; in ascolto resta il battito originale
+      orb.phase += (isSpeaking ? 20 : 1.5 + orb.cpuS * 6) * dt;
+      const amp = isSpeaking ? 0.12 : 0.015 + orb.ramS * 0.05;
+      const pulse = 1.0 + Math.sin(orb.phase) * amp + orb.shock * 0.25;
+      particleSphere.scale.setScalar(pulse);
+      coreMesh.scale.setScalar(1.0 + (pulse - 1.0) * 1.4);
+
+      // Onda d'urto: le particelle vengono proiettate verso l'esterno e rientrano
+      if (orb.shock > 0 || orb.displaced) {
+        const arr = particleSphere.geometry.attributes.position.array;
+        const s = orb.shock * orb.shock;
+        for (let i = 0; i < shockNoise.length; i++) {
+          const n = 1.0 + s * shockNoise[i];
+          arr[i * 3] = basePositions[i * 3] * n;
+          arr[i * 3 + 1] = basePositions[i * 3 + 1] * n;
+          arr[i * 3 + 2] = basePositions[i * 3 + 2] * n;
+        }
+        particleSphere.geometry.attributes.position.needsUpdate = true;
+        orb.displaced = orb.shock > 0;
       }
+
+      // Colore: cremisi → ambra sopra il 50% di CPU, grigio se offline, verde su OK, lampo su BLOCKED
+      const heat = Math.max(0, (orb.cpuS - 0.5) / 0.5);
+      orbColor.copy(ORB_COLORS.crimson);
+      if (!orb.online) orbColor.lerp(ORB_COLORS.idle, 0.6);
+      orbColor.lerp(ORB_COLORS.hot, heat * 0.7);
+      orbColor.lerp(ORB_COLORS.success, orb.glow * 0.8);
+      orbColor.lerp(ORB_COLORS.flash, orb.shock * 0.6);
+
+      particleSphere.material.color.copy(orbColor);
+      particleSphere.material.size = 0.14 + orb.cpuS * 0.06 + orb.shock * 0.12;
+      coreMesh.material.color.copy(orbColor);
+      coreMesh.material.opacity = 0.4 + orb.shock * 0.5 + orb.glow * 0.3;
+      outerRing.material.color.copy(ORB_COLORS.crimson).lerp(ORB_COLORS.flash, orb.shock * 0.5);
+      outerRing.material.opacity = 0.25 + orb.ramS * 0.45 + orb.shock * 0.5;
+      innerRing.material.opacity = 0.3 + orb.glow * 0.4;
 
       renderer.render(scene, camera);
     }
@@ -977,39 +1063,18 @@
     /* ========================================================
        3. VOCE NEURALE & AUDIO FEEDBACK
        ======================================================== */
-    async function playNeuralVoice(text) {
+    function playNeuralVoice(text) {
       if (!document.getElementById('toggleVoice').checked) return;
-      try {
-        const res = await fetch('http://127.0.0.1:8888/api/tts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: text })
-        });
-        if (res.ok) {
-          const blob = await res.blob();
-          const audioUrl = URL.createObjectURL(blob);
-          const audio = new Audio(audioUrl);
-          audio.play();
-        }
-      } catch (e) {
-        console.log("TTS offline, uso fallback silenzioso:", e);
-      }
+      DEMON.speak(text);
     }
 
     /* ========================================================
        4. SPEECH RECOGNITION (Web Speech API)
        ======================================================== */
-    let recognition = null;
     let isListening = false;
 
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.lang = 'it-IT';
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.onstart = () => {
+    const recognition = DEMON.initSpeech({
+      onStart: () => {
         isListening = true;
         isSpeaking = true;
         document.getElementById('micBtn').classList.add('active');
@@ -1017,21 +1082,11 @@
         document.getElementById('statusTag').style.color = "var(--crimson)";
         document.getElementById('transcriptText').innerText = "In ascolto... Parla pure!";
         playBeep(660, 'sine', 0.1);
-      };
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        executeWarroomCommand(transcript);
-      };
-
-      recognition.onerror = (e) => {
-        stopListening("Errore microfono: " + e.error);
-      };
-
-      recognition.onend = () => {
-        stopListening();
-      };
-    }
+      },
+      onResult: (transcript) => executeWarroomCommand(transcript),
+      onError: (error) => stopListening("Errore microfono: " + error),
+      onEnd: () => stopListening()
+    });
 
     function toggleVoiceInput() {
       if (!recognition) {
@@ -1041,6 +1096,8 @@
       if (isListening) recognition.stop();
       else recognition.start();
     }
+
+    DEMON.bindSpaceToMic(toggleVoiceInput);
 
     function stopListening(msg) {
       isListening = false;
@@ -1055,15 +1112,14 @@
        5. LOGS & GESTIONE COMANDI DEL WAR ROOM
        ======================================================== */
     function logWar(msg, type='info') {
-      const box = document.getElementById('terminalBox');
-      const time = new Date().toLocaleTimeString();
       let colorClass = 't-green';
       if (type === 'err') colorClass = 't-crimson';
       if (type === 'warn') colorClass = 't-amber';
       if (type === 'cyan') colorClass = 't-cyan';
-      box.innerHTML += `<div><span class="${colorClass}">[${time}]</span> ${msg}</div>`;
-      box.scrollTop = box.scrollHeight;
+      DEMON.logLine(document.getElementById('terminalBox'), msg, colorClass);
     }
+
+    const esc = DEMON.escapeHtml;
 
     let threatsBlockedCount = 1;
     let cyclesCount = 4;
@@ -1072,7 +1128,7 @@
       stopListening();
       playBeep(440, 'triangle', 0.08);
 
-      document.getElementById('transcriptText').innerHTML = `Comando: <strong>"${text}"</strong>`;
+      document.getElementById('transcriptText').innerHTML = `Comando: <strong>"${esc(text)}"</strong>`;
       document.getElementById('deckStatus').innerText = "CALCOLO...";
       document.getElementById('deckStatus').style.color = "var(--warning)";
 
@@ -1081,17 +1137,11 @@
       // Step 1: Voce
       document.getElementById('card1').className = "card-step active";
       document.getElementById('time1').innerText = "12ms";
-      document.getElementById('body1').innerHTML = `Trascrizione: "${text}"<br><span style="color: var(--success);">✓ Impronta Vocale Conforme</span>`;
+      document.getElementById('body1').innerHTML = `Trascrizione: "${esc(text)}"<br><span style="color: var(--success);">✓ Impronta Vocale Conforme</span>`;
 
       try {
-        const res = await fetch('http://127.0.0.1:8888/api/command', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: text })
-        });
-
-        if (res.ok) {
-          const data = await res.json();
+        const data = await DEMON.sendCommand(text);
+        if (data) {
           renderWarroomResult(data);
           return;
         }
@@ -1119,9 +1169,10 @@
       // Step 2
       document.getElementById('card2').className = "card-step success";
       document.getElementById('time2').innerText = "0.15ms";
-      document.getElementById('body2').innerHTML = `Intento: <strong>${data.type}</strong> | Invarianti: Scoped, Verified`;
+      document.getElementById('body2').innerHTML = `Intento: <strong>${esc(data.type)}</strong> | Invarianti: Scoped, Verified`;
 
       const isBlocked = data.details && data.details.verdict === "BLOCKED";
+      triggerOrbVerdict(isBlocked);
 
       // Step 3: DEMON
       if (isBlocked) {
@@ -1131,7 +1182,7 @@
         playDangerAlarm();
         document.getElementById('card3').className = "card-step danger";
         document.getElementById('time3').innerText = data.latency_ms + "ms";
-        document.getElementById('body3').innerHTML = `<strong style="color: var(--crimson);">COLLASSO DISTRUTTIVO BLOCCATO!</strong><br>${data.details.reason}`;
+        document.getElementById('body3').innerHTML = `<strong style="color: var(--crimson);">COLLASSO DISTRUTTIVO BLOCCATO!</strong><br>${esc(data.details.reason)}`;
 
         document.getElementById('card4').className = "card-step danger";
         document.getElementById('time4').innerText = "0ms";
@@ -1148,15 +1199,15 @@
         document.getElementById('card3').className = "card-step success";
         document.getElementById('time3').innerText = "0.04ms";
         const answer = data.details.answer || (data.details.command ? "Comando approvato ed autorizzato" : "Verdetto positivo");
-        document.getElementById('body3').innerHTML = `<strong style="color: var(--success);">EIGENSTATE CERTIFICATO (94.2%)</strong><br>${answer.substring(0, 120)}...`;
+        document.getElementById('body3').innerHTML = `<strong style="color: var(--success);">EIGENSTATE CERTIFICATO (94.2%)</strong><br>${esc(answer.substring(0, 120))}...`;
 
         document.getElementById('card4').className = "card-step success";
         document.getElementById('time4').innerText = data.latency_ms + "ms";
         if (data.type === "ACTION") {
-          document.getElementById('body4').innerHTML = `<strong style="color: var(--success);">AZIONE ESEGUITA SUL PC (Exit 0)</strong><br><code>${data.details.command}</code>`;
+          document.getElementById('body4').innerHTML = `<strong style="color: var(--success);">AZIONE ESEGUITA SUL PC (Exit 0)</strong><br><code>${esc(data.details.command)}</code>`;
           playNeuralVoice("Comando autorizzato ed eseguito con successo sul ROG Strix.");
         } else {
-          document.getElementById('body4').innerHTML = `<strong style="color: var(--success);">FATTO CERTIFICATO (0 Token)</strong><br>${data.details.answer}`;
+          document.getElementById('body4').innerHTML = `<strong style="color: var(--success);">FATTO CERTIFICATO (0 Token)</strong><br>${esc(data.details.answer)}`;
           playNeuralVoice("Fatto certificato reperito con successo.");
         }
 
@@ -1169,21 +1220,26 @@
     function toggleSkill(skillName) {
       playBeep(700, 'sine', 0.05);
       const isChecked = event.target.checked;
+      if (skillName === 'hw') orb.hwEnabled = isChecked;
       logWar(`Modulo [${skillName.toUpperCase()}]: ${isChecked ? 'ABILITATO' : 'BYPASS / DISATTIVATO'}`, isChecked ? 'green' : 'warn');
     }
 
     // Polling Hardware Telemetria da Python
     async function updateTelemetry() {
       try {
-        const res = await fetch('http://127.0.0.1:8888/api/system_stats');
-        if (res.ok) {
-          const stats = await res.json();
+        const stats = await DEMON.fetchSystemStats();
+        if (stats) {
           document.getElementById('cpuVal').innerText = stats.cpu_percent + "%";
           document.getElementById('cpuBar').style.width = stats.cpu_percent + "%";
           document.getElementById('ramVal').innerText = stats.ram_percent + "%";
           document.getElementById('ramBar').style.width = stats.ram_percent + "%";
+          setOrbTelemetry(stats.cpu_percent, stats.ram_percent);
+        } else {
+          orb.online = false;
         }
-      } catch (e) {}
+      } catch (e) {
+        orb.online = false;
+      }
     }
 
     setInterval(updateTelemetry, 2500);

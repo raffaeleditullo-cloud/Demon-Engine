@@ -22,7 +22,7 @@ import argparse
 import asyncio
 import io
 import threading
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import HTTPServer, SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse
 
 try:
@@ -403,21 +403,58 @@ class DemonGateway:
             response["details"] = {"verdict": "ERROR", "error": str(e), "execution_occurred": False}
 
 
+# Risorse UI condivise tra War Room e Cockpit, servite dalla cartella del gateway
+SHARED_ASSETS = {
+    "/demon-ui.css": ("demon-ui.css", "text/css; charset=utf-8"),
+    "/demon-core.js": ("demon-core.js", "application/javascript; charset=utf-8"),
+}
+
+
 class DemonHTTPHandler(SimpleHTTPRequestHandler):
     gateway = None
 
+    def _local_hosts(self) -> set:
+        port = self.server.server_port
+        return {f"127.0.0.1:{port}", f"localhost:{port}"}
+
+    def _allowed_origins(self) -> set:
+        return {f"http://{host}" for host in self._local_hosts()}
+
+    def _reject_untrusted(self, require_origin_check: bool) -> bool:
+        """
+        Blocca le richieste che non arrivano dalle interfacce del gateway.
+        /api/command esegue azioni reali sul PC: un sito qualsiasi aperto nel browser
+        non deve poterlo raggiungere (CSRF) né fingersi il gateway (DNS rebinding).
+        Client non-browser (curl, CLI) non inviano Origin e restano ammessi.
+        """
+        if self.headers.get("Host", "") not in self._local_hosts():
+            self.send_error(403, "Host non consentito")
+            return True
+        origin = self.headers.get("Origin")
+        if require_origin_check and origin is not None and origin not in self._allowed_origins():
+            self.send_error(403, "Origine non consentita")
+            return True
+        return False
+
     def end_headers(self):
-        # Aggiunge intestazioni CORS per consentire chiamate da qualunque interfaccia web
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        # CORS solo verso le interfacce servite dal gateway stesso (127.0.0.1 / localhost)
+        origin = self.headers.get("Origin") if hasattr(self, "headers") else None
+        if origin in self._allowed_origins():
+            self.send_header('Access-Control-Allow-Origin', origin)
+            self.send_header('Vary', 'Origin')
+            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         super().end_headers()
 
     def do_OPTIONS(self):
+        if self._reject_untrusted(require_origin_check=True):
+            return
         self.send_response(200)
         self.end_headers()
 
     def do_GET(self):
+        if self._reject_untrusted(require_origin_check=False):
+            return
         parsed = urlparse(self.path)
         if parsed.path in ["/", "/warroom"]:
             warroom_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "demon_war_room.html")
@@ -447,6 +484,22 @@ class DemonHTTPHandler(SimpleHTTPRequestHandler):
                 return
             except Exception as e:
                 self.send_error(500, f"Cockpit file error: {e}")
+                return
+
+        if parsed.path in SHARED_ASSETS:
+            asset_name, content_type = SHARED_ASSETS[parsed.path]
+            asset_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), asset_name)
+            try:
+                with open(asset_file, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", content_type)
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+            except Exception as e:
+                self.send_error(500, f"Asset file error: {e}")
                 return
 
         if parsed.path == "/api/status":
@@ -486,9 +539,12 @@ class DemonHTTPHandler(SimpleHTTPRequestHandler):
             self.wfile.write(body)
             return
 
-        super().do_GET()
+        # Nessun file servito dalla cartella di avvio: solo le route esplicite sopra
+        self.send_error(404, "Risorsa non trovata")
 
     def do_POST(self):
+        if self._reject_untrusted(require_origin_check=True):
+            return
         parsed = urlparse(self.path)
         content_length = int(self.headers.get("Content-Length", 0))
         raw_body = self.rfile.read(content_length).decode("utf-8")
@@ -545,7 +601,7 @@ def run_server(port: int = 8888):
     gateway = DemonGateway()
     DemonHTTPHandler.gateway = gateway
     server_address = ('127.0.0.1', port)
-    httpd = HTTPServer(server_address, DemonHTTPHandler)
+    httpd = ThreadingHTTPServer(server_address, DemonHTTPHandler)
 
     # Avvia pre-riscaldamento TTS in background
     t = threading.Thread(target=prewarm_tts, daemon=True)
