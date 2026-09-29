@@ -126,15 +126,65 @@ All benchmarks run locally with zero external network or GPU dependencies:
 
 ---
 
-## 🖥️ Local Interactive Dashboard
+## 🚀 End-to-End 5-Phase Architecture
 
-Demon Engine includes a lightweight, zero-dependency dashboard (`index.html`).
-Double-click `index.html` in your browser to visualize:
-- The chaotic superposition wave collapsing into a single resonant eigenstate.
-- Real-time pairwise phase interference matrix ($I_{ij}$).
-- Instant dampening of conflicting branches.
+DEMON Engine operates as a full-stack, zero-token local reflex engine:
+
+```
+[ Operator Voice / Text ]
+          │
+          ▼
+┌───────────────────────────────────────────────┐
+│ 1. Voice Cockpit & Web Speech API (Phase 4)   │ ──> Latency: 12 ms
+└───────────────────────────────────────────────┘
+          │
+          ▼
+┌───────────────────────────────────────────────┐
+│ 2. Reflex Memory Cache Lookup (Phase 2)       │ ──> 0.15 ms (0 tokens, 0 web calls)
+└───────────────────────────────────────────────┘
+          │ [Cache Miss]
+          ▼
+┌───────────────────────────────────────────────┐
+│ 3. Live Web Consensus via DDGS (Phase 1)      │ ──> 3 Sources + Wave Filtering
+└───────────────────────────────────────────────┘
+          │ [Action Requested]
+          ▼
+┌───────────────────────────────────────────────┐
+│ 4. Safe Sentinel & Antipattern Gate (Phase 3) │ ──> Blocks destructive ops in 0.04 ms
+└───────────────────────────────────────────────┘
+          │ [Authorized Eigenstate]
+          ▼
+┌───────────────────────────────────────────────┐
+│ 5. Scoped System Actuator Execution           │ ──> Sandbox PowerShell / OS execution
+└───────────────────────────────────────────────┘
+```
+
+### 🎙️ Quickstart: Voice Cockpit & Unified Gateway
+Start the local gateway daemon on port `8888`:
+```bash
+python demon_gateway.py --serve --port 8888
+```
+Then open your browser at **`http://127.0.0.1:8888/cockpit`** to interact directly via microphone or quick-test chips!
+
+### 🤖 Model Context Protocol (MCP) Server
+To plug DEMON directly into Claude Desktop, Cursor, Antigravity, or Terminal AI via stdio:
+```bash
+python demon_mcp.py
+```
+**Exposed Tools:**
+* `demon_pipeline`: End-to-end intent routing, reflex cache, web consensus, and safe execution.
+* `demon_raw_collapse`: Raw Born-rule wave interference calculation across candidate states.
+
+---
+
+## 🖥️ Local Dashboards
+
+Demon Engine includes two standalone zero-dependency interfaces:
+* **`voice_cockpit.html`**: Luxury obsidian & crimson cyber cockpit with real-time audio wave canvas, live 4-stage execution cards, and terminal logs.
+* **`dashboard.html` / `index.html`**: Mathematical quantum-coherence matrix visualizer.
 
 ---
 
 ## 📄 License
 MIT License. Inspired by biological quantum efficiency for clean, reliable software engineering.
+
