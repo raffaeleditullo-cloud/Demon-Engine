@@ -8,5 +8,15 @@
     "url": "https://versionlog.com/nodejs/22/",
     "coherence_percentage": "38.09%",
     "latency_ms": 0.06620003841817379
+  },
+  "777f6e12792dac39": {
+    "query": "Quali sono le novità principali introdotte in Node.js 22 LTS?",
+    "timestamp": "2026-09-29 09:10:16",
+    "winner_id": "SRC_1",
+    "title": "What's New in Node.js 22? | Syncfusion Blogs",
+    "content": "February 10, 2026 - This blog explains the exciting new features and enhancements in Node.js 22, including ESM support, WebSocket client, and V8 engine updates.",
+    "url": "https://www.syncfusion.com/blogs/post/whats-new-in-node-js-22",
+    "coherence_percentage": 33.3,
+    "latency_ms": 0.053
   }
 }
