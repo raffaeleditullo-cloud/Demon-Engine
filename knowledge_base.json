@@ -48,5 +48,25 @@
     "url": "https://www.iobit.com/it/valuta-il-mio-pc.php",
     "coherence_percentage": 33.3,
     "latency_ms": 0.179
+  },
+  "2f311e49bd74a4c7": {
+    "query": "python -c \"print('ALL TESTS PASSED: SILICON CONVERGENCE ACHIEVED')\"",
+    "timestamp": "2026-09-30 10:15:08",
+    "winner_id": "SRC_1",
+    "title": "Mocking print() in Unit Tests (Video) – Real Python",
+    "content": "If you were using a test harness like pytest, it would actually print out results showing you how many of your tests had passed. Published: May 5, 2020",
+    "url": "https://realpython.com/lessons/mocking-print-unit-tests/",
+    "coherence_percentage": 33.3,
+    "latency_ms": 0.086
+  },
+  "35e121a7409182ab": {
+    "query": "echo 'HEXAD verified step'",
+    "timestamp": "2026-09-30 16:42:21",
+    "winner_id": "SRC_1",
+    "title": "ECHO: Elastic Speculative Decoding with Sparse Gating for High ...",
+    "content": "Crucially, ECHO employs sparse confidence gating to manage the batch as a unified super-tree, elastically pivoting budget between depth and width to co-optimize the trade-off between reducing global verification steps and maximizing per-step efficiency.",
+    "url": "https://icml.cc/virtual/2026/oral/71057",
+    "coherence_percentage": 33.3,
+    "latency_ms": 0.1
   }
 }
