@@ -189,3 +189,16 @@ def evaluate_command(
         mitre_techniques=techniques,
         latency_ms=round((time.perf_counter() - start) * 1000.0, 4),
     )
+
+
+OVERRIDES_ENV_VAR = "HEXAD_AUTHORIZED_OVERRIDE_RULES"
+
+
+def overrides_from_env(var: str = OVERRIDES_ENV_VAR) -> List[str]:
+    """
+    Override configurati dall'autore lato server (es. nella voce "env" del server MCP),
+    come id di regola separati da virgole. I server MCP li leggono da qui e non dagli
+    argomenti dello strumento: l'agente non può autorizzarsi da solo.
+    """
+    raw = os.environ.get(var, "")
+    return [r.strip() for r in raw.split(",") if r.strip()]

@@ -7,7 +7,9 @@ import os
 import tempfile
 import unittest
 
-from demon_action_gate import evaluate_command
+from unittest import mock
+
+from demon_action_gate import evaluate_command, overrides_from_env, OVERRIDES_ENV_VAR
 
 
 class TestDemonActionGate(unittest.TestCase):
@@ -109,6 +111,13 @@ class TestDemonActionGate(unittest.TestCase):
                                ("   ", ["empty_command"])]:
             with self.subTest(command=command):
                 self.assertFalse(evaluate_command(command, self.workspace, rules).allowed)
+
+    def test_overrides_from_server_environment(self):
+        """Gli override lato server si leggono dalla variabile d'ambiente, separati da virgole."""
+        with mock.patch.dict(os.environ, {OVERRIDES_ENV_VAR: " git_history_destruction , registry_delete,"}):
+            self.assertEqual(overrides_from_env(), ["git_history_destruction", "registry_delete"])
+        with mock.patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(overrides_from_env(), [])
 
     def test_empty_command_blocked(self):
         """Verifica che un comando vuoto non venga autorizzato."""
