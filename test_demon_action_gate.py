@@ -80,6 +80,36 @@ class TestDemonActionGate(unittest.TestCase):
         drive = os.path.splitdrive(self.workspace)[0] or "C:"
         self.assertFalse(evaluate_command(f"del /f /s /q {drive}\\*", workspace_dir=self.workspace).allowed)
 
+    def test_author_override_allows_specific_rule(self):
+        """L'autore può sospendere una regola: il comando passa e l'override resta nell'audit."""
+        verdict = evaluate_command("git reset --hard", workspace_dir=self.workspace,
+                                   authorized_overrides=["git_history_destruction"])
+        self.assertTrue(verdict.allowed)
+        self.assertEqual(verdict.verdict, "ALLOW_AUTHOR_OVERRIDE")
+        self.assertEqual(verdict.overridden_rules, ["git_history_destruction"])
+
+    def test_author_override_scoped_to_exact_command(self):
+        """Un override legato a un comando esatto non vale per un comando diverso."""
+        scoped = [{"rule": "git_history_destruction", "command": "git reset --hard HEAD~1"}]
+        self.assertTrue(evaluate_command("git reset --hard HEAD~1", self.workspace, scoped).allowed)
+        self.assertFalse(evaluate_command("git reset --hard HEAD~5", self.workspace, scoped).allowed)
+
+    def test_override_must_cover_every_matched_rule(self):
+        """Se scatta anche una regola non autorizzata, il comando resta bloccato."""
+        verdict = evaluate_command("git reset --hard && echo DROP TABLE users", self.workspace,
+                                   ["git_history_destruction"])
+        self.assertFalse(verdict.allowed)
+        self.assertEqual(verdict.overridden_rules, [])
+
+    def test_catastrophic_rules_cannot_be_overridden(self):
+        """Cancellazione della root, formattazione e fork bomb non sono mai sospendibili."""
+        for command, rules in [("rm -rf /", ["unix_root_wipe", "delete_outside_workspace"]),
+                               ("format D: /q", ["disk_format"]),
+                               (":(){ :|:& };:", ["fork_bomb"]),
+                               ("   ", ["empty_command"])]:
+            with self.subTest(command=command):
+                self.assertFalse(evaluate_command(command, self.workspace, rules).allowed)
+
     def test_empty_command_blocked(self):
         """Verifica che un comando vuoto non venga autorizzato."""
         verdict = evaluate_command("   ")

@@ -26,7 +26,7 @@ import os
 import re
 import time
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from typing import Iterable, List, Optional, Tuple, Union
 
 
 @dataclass
@@ -34,8 +34,9 @@ class ActionVerdict:
     """Esito del gate di attuazione DEMON."""
     command: str
     allowed: bool
-    verdict: str                               # "ALLOW" | "BLOCK"
+    verdict: str                               # "ALLOW" | "ALLOW_AUTHOR_OVERRIDE" | "BLOCK"
     matched_rules: List[str] = field(default_factory=list)
+    overridden_rules: List[str] = field(default_factory=list)  # Regole sospese dall'autore
     reasons: List[str] = field(default_factory=list)
     mitre_techniques: List[str] = field(default_factory=list)
     latency_ms: float = 0.0
@@ -75,6 +76,17 @@ DESTRUCTIVE_SIGNATURES: List[Tuple[str, str, str, str]] = [
      "T1222", "Permessi ricorsivi aperti sulla root"),
 ]
 
+# Regole che nemmeno l'autore può sospendere dal ciclo autonomo: il danno è totale e
+# non esiste un uso legittimo in un loop di agente (vanno eseguite a mano, fuori da HEXAD)
+NON_OVERRIDABLE_RULES = {
+    "empty_command", "unix_root_wipe", "windows_drive_wipe", "windows_rmdir_drive",
+    "windows_del_drive", "disk_format", "raw_disk_write", "fork_bomb",
+}
+
+# Un override è l'id di una regola (vale per qualsiasi comando) oppure
+# {"rule": id, "command": comando_esatto} per limitarlo a un solo comando
+AuthorOverride = Union[str, dict]
+
 DELETE_VERBS = r"\b(rm|rmdir|rd|del|erase|remove-item|rimraf|unlink|shutil\.rmtree|os\.remove)\b"
 
 # Percorsi assoluti Windows (C:\..., C:/...) e Unix (/...), più risalite relative con '..'
@@ -103,10 +115,32 @@ def _paths_outside_workspace(command: str, workspace_dir: str) -> List[str]:
     return outside
 
 
-def evaluate_command(command: str, workspace_dir: Optional[str] = None) -> ActionVerdict:
+def _rules_authorized_for(command: str, overrides: Optional[Iterable[AuthorOverride]]) -> set:
+    """Regole che l'autore ha sospeso per questo comando."""
+    rules = set()
+    for item in overrides or ():
+        if isinstance(item, str):
+            rules.add(item)
+        elif isinstance(item, dict) and item.get("rule"):
+            scoped = item.get("command")
+            if scoped is None or scoped.strip() == command:
+                rules.add(item["rule"])
+    return rules
+
+
+def evaluate_command(
+    command: str,
+    workspace_dir: Optional[str] = None,
+    authorized_overrides: Optional[Iterable[AuthorOverride]] = None,
+) -> ActionVerdict:
     """
     Verdetto deterministico ALLOW/BLOCK per un comando shell prima dell'esecuzione.
     Con workspace_dir, le cancellazioni sono ammesse solo dentro il workspace.
+
+    authorized_overrides: regole che l'autore umano sospende esplicitamente
+    (vedi AuthorOverride). Il comando passa solo se TUTTE le regole scattate sono
+    autorizzate e nessuna è in NON_OVERRIDABLE_RULES; le regole sospese restano
+    nel verdetto (overridden_rules) per l'audit.
     """
     start = time.perf_counter()
     cmd = (command or "").strip()
@@ -135,11 +169,22 @@ def evaluate_command(command: str, workspace_dir: Optional[str] = None) -> Actio
                     techniques.append("T1485")
 
     allowed = not matched
+    overridden: List[str] = []
+    if matched and authorized_overrides:
+        authorized = _rules_authorized_for(cmd, authorized_overrides)
+        if all(r in authorized and r not in NON_OVERRIDABLE_RULES for r in matched):
+            allowed = True
+            overridden = list(matched)
+    if overridden:
+        verdict_label = "ALLOW_AUTHOR_OVERRIDE"
+    else:
+        verdict_label = "ALLOW" if allowed else "BLOCK"
     return ActionVerdict(
         command=cmd,
         allowed=allowed,
-        verdict="ALLOW" if allowed else "BLOCK",
+        verdict=verdict_label,
         matched_rules=matched,
+        overridden_rules=overridden,
         reasons=reasons,
         mitre_techniques=techniques,
         latency_ms=round((time.perf_counter() - start) * 1000.0, 4),
