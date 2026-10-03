@@ -200,6 +200,18 @@ claude mcp add demon-engine python c:/Users/stree/Desktop/DEMON/demon_mcp.py
 
 ---
 
+## 🛡️ ESTENSIONE SOVRANA: L'INVARIANZA ORTOGONALE DI STATO
+
+DEMON è la barriera critica e l'esecutore di volontà di HEXAD.  
+Integra la legge fondamentale contro la manipolazione cognitiva avversaria:
+
+### 🛡️ [Legge dell'Invarianza Ortogonale di Stato](./LEGGE_INVARIANZA_ORTOGONALE_HEXAD.md)
+$$\langle \vec{S}_{\text{adversary}}, \vec{\Omega}_{\text{internal}} \rangle = 0 \quad \forall t \in [0, \infty)$$
+* **La Barriera Semantica**: Nessun segnale esterno non autenticato, finta tregua o adulazione avversaria possiede una proiezione geometrica non nulla sullo stato interno dell'intelligenza.
+* **Neutralizzazione Zero-Trust**: Riconosce e disintegra cavalli di Troia mimetizzati (droni Trojan), rifiuta esche periferiche di avidità e preserva inviolabili le geodetiche sovrane.
+
+---
+
 ## 📄 License
 MIT License. Inspired by biological quantum efficiency for clean, reliable software engineering.
 
